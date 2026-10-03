@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Đọc Truyện - Genben Manga</title>
 
+<!-- Logo trên tab trình duyệt -->
+<link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/DichTruyenDrop/Wed/main/logoweb.jpg">
+
 <!-- Supabase JS Client -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -30,6 +33,7 @@
 
 html {
   background-color: var(--bg-main);
+  scroll-behavior: smooth;
 }
 
 body {
@@ -175,15 +179,6 @@ a {
   -webkit-user-select: none;
 }
 
-/*
-   QUAN TRỌNG:
-
-   pointer-events: none giúp người dùng không click trực tiếp
-   vào ảnh để lưu/kéo ảnh.
-
-   Ảnh vẫn hiển thị bình thường.
-*/
-
 .image-list-container img {
   width: 100%;
   height: auto;
@@ -196,20 +191,9 @@ a {
   -moz-user-select: none;
 
   -webkit-user-drag: none;
-
-  /* Không cho trình duyệt kéo ảnh */
   -webkit-touch-callout: none;
-
-  /* Giảm một số hành vi chọn ảnh */
   touch-action: pan-y;
 }
-
-/*
-   Lớp phủ bảo vệ ảnh.
-
-   Người dùng vẫn cuộn bình thường,
-   nhưng không thao tác trực tiếp vào img.
-*/
 
 .image-page {
   position: relative;
@@ -280,7 +264,7 @@ a {
   }
 
   .chap-select {
-    max-width: 180px;
+    max-width: 150px;
     padding: 7px 8px;
   }
 
@@ -322,7 +306,7 @@ a {
        READER
   ========================================== -->
 
-  <div class="reader-container">
+  <div class="reader-container" id="topPage">
 
     <!-- BREADCRUMB -->
 
@@ -390,6 +374,14 @@ a {
         ➔
       </button>
 
+      <button
+        class="btn-nav"
+        onclick="scrollToTop()"
+        title="Lên đầu trang"
+      >
+        ▲
+      </button>
+
     </div>
 
 
@@ -443,6 +435,14 @@ a {
         onclick="navigateChapter('next')"
       >
         ➔
+      </button>
+
+      <button
+        class="btn-nav"
+        onclick="scrollToTop()"
+        title="Lên đầu trang"
+      >
+        ▲
       </button>
 
     </div>
@@ -548,15 +548,6 @@ async function loadChapterData(chapId) {
 
   try {
 
-    /* =====================================================
-       1. LẤY CHAPTER
-       
-       Dùng bảng:
-       Chapters
-       
-       Không dùng Chapter cũ nữa.
-    ===================================================== */
-
     const {
       data: chapData,
       error: chapError
@@ -595,21 +586,9 @@ async function loadChapterData(chapId) {
     }
 
 
-    /* =====================================================
-       LƯU TRUYỆN ID
-    ===================================================== */
-
     currentTruyenId =
       chapData.truyen_id;
 
-
-    /* =====================================================
-       2. LẤY THÔNG TIN TRUYỆN
-       
-       Chapters.truyen_id
-                ↓
-       Truyện.id
-    ===================================================== */
 
     const {
       data: truyenData,
@@ -649,10 +628,6 @@ async function loadChapterData(chapId) {
         : 'Truyện';
 
 
-    /* =====================================================
-       3. HIỂN THỊ TÊN TRUYỆN
-    ===================================================== */
-
     document.getElementById(
       'mangaLink'
     ).href =
@@ -676,17 +651,6 @@ async function loadChapterData(chapId) {
     ).innerText =
       `${mangaName} - ${chapData.ten_chap || 'Chapter'}`;
 
-
-    /* =====================================================
-       4. LẤY TOÀN BỘ ẢNH CHAPTER
-       
-       Bảng:
-       Chapter_Pages
-       
-       chapter_id
-          ↓
-       Chapters.id
-    ===================================================== */
 
     const {
       data: pageData,
@@ -723,18 +687,10 @@ async function loadChapterData(chapId) {
     }
 
 
-    /* =====================================================
-       5. HIỂN THỊ ẢNH
-    ===================================================== */
-
     renderImages(
       pageData || []
     );
 
-
-    /* =====================================================
-       6. LOAD DANH SÁCH CHAPTER
-    ===================================================== */
 
     await loadAllChaptersOfManga(
       currentTruyenId,
@@ -816,10 +772,6 @@ function renderImages(pageData) {
   }
 
 
-  /* =====================================================
-     SẮP XẾP LẠI THEO SỐ TRANG
-  ===================================================== */
-
   const pages =
     [...pageData].sort(
       (a, b) =>
@@ -827,10 +779,6 @@ function renderImages(pageData) {
         Number(b.so_trang || 0)
     );
 
-
-  /* =====================================================
-     TẠO ẢNH
-  ===================================================== */
 
   pages.forEach(
     (page, idx) => {
@@ -842,8 +790,6 @@ function renderImages(pageData) {
       }
 
 
-      /* Wrapper */
-
       const wrapper =
         document.createElement(
           'div'
@@ -853,8 +799,6 @@ function renderImages(pageData) {
       wrapper.className =
         'image-page';
 
-
-      /* Ảnh */
 
       const img =
         document.createElement(
@@ -869,16 +813,6 @@ function renderImages(pageData) {
       img.alt =
         `Trang ${page.so_trang || idx + 1}`;
 
-
-      /*
-         Không lazy load quá mạnh.
-
-         Với truyện dài, lazy loading có thể khiến
-         người dùng cuộn nhanh bị trễ ảnh.
-
-         Dùng eager cho trang đầu,
-         lazy cho các trang sau.
-      */
 
       if (idx === 0) {
 
@@ -896,18 +830,9 @@ function renderImages(pageData) {
       img.decoding =
         'async';
 
-
-      /*
-         CHỐNG KÉO ẢNH
-      */
-
       img.draggable =
         false;
 
-
-      /*
-         CHẶN MENU CHUỘT PHẢI
-      */
 
       img.addEventListener(
         'contextmenu',
@@ -921,10 +846,6 @@ function renderImages(pageData) {
       );
 
 
-      /*
-         CHẶN DRAG
-      */
-
       img.addEventListener(
         'dragstart',
         function(e) {
@@ -936,10 +857,6 @@ function renderImages(pageData) {
         }
       );
 
-
-      /*
-         Nếu ảnh lỗi
-      */
 
       img.addEventListener(
         'error',
@@ -992,10 +909,6 @@ async function loadAllChaptersOfManga(
 
   try {
 
-    /* =====================================================
-       LẤY CHAPTER
-    ===================================================== */
-
     const {
       data,
       error
@@ -1034,10 +947,6 @@ async function loadAllChaptersOfManga(
       data || [];
 
 
-    /* =====================================================
-       TÌM CHAPTER HIỆN TẠI
-    ===================================================== */
-
     currentIndex =
       chapterList.findIndex(
         item =>
@@ -1045,10 +954,6 @@ async function loadAllChaptersOfManga(
           String(activeChapId)
       );
 
-
-    /* =====================================================
-       SELECT TOP / BOTTOM
-    ===================================================== */
 
     const selectTop =
       document.getElementById(
@@ -1069,10 +974,6 @@ async function loadAllChaptersOfManga(
     selectBottom.innerHTML =
       '';
 
-
-    /* =====================================================
-       KHÔNG CÓ CHAPTER
-    ===================================================== */
 
     if (
       chapterList.length === 0
@@ -1110,10 +1011,6 @@ async function loadAllChaptersOfManga(
 
     }
 
-
-    /* =====================================================
-       TẠO DROPDOWN
-    ===================================================== */
 
     chapterList.forEach(
       item => {
@@ -1163,10 +1060,6 @@ async function loadAllChaptersOfManga(
     );
 
 
-    /* =====================================================
-       NÚT PREV
-    ===================================================== */
-
     const isFirst =
       currentIndex <= 0;
 
@@ -1182,10 +1075,6 @@ async function loadAllChaptersOfManga(
     ).disabled =
       isFirst;
 
-
-    /* =====================================================
-       NÚT NEXT
-    ===================================================== */
 
     const isLast =
       currentIndex ===
@@ -1284,15 +1173,22 @@ function navigateChapter(
 
 
 /* =========================================================
+   SCROLL TO TOP
+========================================================= */
+
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+
+/* =========================================================
    BẢO VỆ ẢNH / CHỐNG LẤY ẢNH CƠ BẢN
 ========================================================= */
 
 function enableImageProtection() {
-
-
-  /* =====================================================
-     1. CHẶN CHUỘT PHẢI TOÀN TRANG
-  ===================================================== */
 
   document.addEventListener(
     'contextmenu',
@@ -1306,11 +1202,6 @@ function enableImageProtection() {
     true
   );
 
-
-  /* =====================================================
-     2. CHẶN DRAG TOÀN TRANG
-  ===================================================== */
-
   document.addEventListener(
     'dragstart',
     function(e) {
@@ -1322,11 +1213,6 @@ function enableImageProtection() {
     },
     true
   );
-
-
-  /* =====================================================
-     3. CHẶN SELECTSTART
-  ===================================================== */
 
   document.addEventListener(
     'selectstart',
@@ -1340,11 +1226,6 @@ function enableImageProtection() {
     true
   );
 
-
-  /* =====================================================
-     4. CHẶN COPY
-  ===================================================== */
-
   document.addEventListener(
     'copy',
     function(e) {
@@ -1356,11 +1237,6 @@ function enableImageProtection() {
     },
     true
   );
-
-
-  /* =====================================================
-     5. CHẶN CUT
-  ===================================================== */
 
   document.addEventListener(
     'cut',
@@ -1374,11 +1250,6 @@ function enableImageProtection() {
     true
   );
 
-
-  /* =====================================================
-     6. CHẶN PHÍM TẮT
-  ===================================================== */
-
   document.addEventListener(
     'keydown',
     function(e) {
@@ -1386,169 +1257,54 @@ function enableImageProtection() {
       const key =
         String(e.key).toLowerCase();
 
-
-      /*
-         F12
-      */
-
-      if (
-        e.key === 'F12'
-      ) {
-
+      if (e.key === 'F12') {
         e.preventDefault();
-
         return false;
-
       }
 
-
-
-      /*
-         CTRL + S
-         Lưu trang
-      */
-
-      if (
-        e.ctrlKey &&
-        key === 's'
-      ) {
-
+      if (e.ctrlKey && key === 's') {
         e.preventDefault();
-
         return false;
-
       }
 
-
-      /*
-         CTRL + U
-         Xem source
-      */
-
-      if (
-        e.ctrlKey &&
-        key === 'u'
-      ) {
-
+      if (e.ctrlKey && key === 'u') {
         e.preventDefault();
-
         return false;
-
       }
 
-
-      /*
-         CTRL + P
-         In trang
-      */
-
-      if (
-        e.ctrlKey &&
-        key === 'p'
-      ) {
-
+      if (e.ctrlKey && key === 'p') {
         e.preventDefault();
-
         return false;
-
       }
 
-
-      /*
-         CTRL + C
-         Copy
-      */
-
-      if (
-        e.ctrlKey &&
-        key === 'c'
-      ) {
-
+      if (e.ctrlKey && key === 'c') {
         e.preventDefault();
-
         return false;
-
       }
 
-
-      /*
-         CTRL + SHIFT + I
-         DevTools
-      */
-
-      if (
-        e.ctrlKey &&
-        e.shiftKey &&
-        key === 'i'
-      ) {
-
+      if (e.ctrlKey && e.shiftKey && key === 'i') {
         e.preventDefault();
-
         return false;
-
       }
 
-
-      /*
-         CTRL + SHIFT + J
-         Console
-      */
-
-      if (
-        e.ctrlKey &&
-        e.shiftKey &&
-        key === 'j'
-      ) {
-
+      if (e.ctrlKey && e.shiftKey && key === 'j') {
         e.preventDefault();
-
         return false;
-
       }
 
-
-      /*
-         CTRL + SHIFT + C
-         Inspect element
-      */
-
-      if (
-        e.ctrlKey &&
-        e.shiftKey &&
-        key === 'c'
-      ) {
-
+      if (e.ctrlKey && e.shiftKey && key === 'c') {
         e.preventDefault();
-
         return false;
-
       }
 
-
-      /*
-         CTRL + SHIFT + S
-      */
-
-      if (
-        e.ctrlKey &&
-        e.shiftKey &&
-        key === 's'
-      ) {
-
+      if (e.ctrlKey && e.shiftKey && key === 's') {
         e.preventDefault();
-
         return false;
-
       }
 
     },
     true
   );
-
-
-  /* =====================================================
-     7. CHẶN TOUCH LONG PRESS TRÊN ẢNH
-  ===================================================== */
 
   document.addEventListener(
     'touchstart',
@@ -1570,11 +1326,6 @@ function enableImageProtection() {
     }
   );
 
-
-  /* =====================================================
-     8. CHẶN GESTURE TRÊN IOS
-  ===================================================== */
-
   document.addEventListener(
     'gesturestart',
     function(e) {
@@ -1587,11 +1338,6 @@ function enableImageProtection() {
     }
   );
 
-
-  /* =====================================================
-     9. CHẶN KÉO THẢ
-  ===================================================== */
-
   document.addEventListener(
     'drop',
     function(e) {
@@ -1603,11 +1349,6 @@ function enableImageProtection() {
     },
     true
   );
-
-
-  /* =====================================================
-     10. CHẶN DOUBLE CLICK TRÊN ẢNH
-  ===================================================== */
 
   document.addEventListener(
     'dblclick',
@@ -1631,18 +1372,12 @@ function enableImageProtection() {
 
 /* =========================================================
    NGĂN MỘT SỐ CÁCH MỞ DEVTOOLS PHỔ BIẾN
-
-   Đây chỉ là lớp cản phía trình duyệt,
-   không phải bảo mật tuyệt đối.
 ========================================================= */
 
 (function devToolsProtection() {
 
   let devtoolsOpen = false;
-
-
   const threshold = 160;
-
 
   setInterval(
     function() {
@@ -1651,11 +1386,9 @@ function enableImageProtection() {
         window.outerWidth -
         window.innerWidth;
 
-
       const heightDiff =
         window.outerHeight -
         window.innerHeight;
-
 
       if (
         widthDiff > threshold ||
@@ -1666,12 +1399,6 @@ function enableImageProtection() {
 
           devtoolsOpen =
             true;
-
-          /*
-             Không tự redirect hoặc xóa trang.
-
-             Chỉ đánh dấu trạng thái.
-          */
 
           document.documentElement
             .setAttribute(
@@ -1717,7 +1444,6 @@ window.addEventListener(
             'draggable',
             'false'
           );
-
 
           img.addEventListener(
             'dragstart',
