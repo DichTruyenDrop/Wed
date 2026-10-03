@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Đọc Truyện - Genben Manga</title>
+
+<!-- Supabase JS Client -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style type="text/css">
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+:root {
+  --bg-main: #14131d;
+  --bg-header: #1c1b29;
+  --bg-card: #1c1b29;
+  --bg-btn: #252336;
+  --border-color: #282638;
+  --text-main: #ffffff;
+  --text-sub: #a5a5b5;
+  --accent-color: #6c5ce7;
+}
+
+html {
+  background-color: var(--bg-main);
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  overflow-x: hidden;
+
+  /* CHỐNG CHỌN NỘI DUNG */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+a {
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+/* =========================================
+   HEADER
+========================================= */
+
+.header-top {
+  background-color: var(--bg-header);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.logo img {
+  height: 32px;
+  vertical-align: middle;
+
+  /* CHỐNG KÉO LOGO */
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.nav-top a {
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-sub);
+  text-transform: uppercase;
+}
+
+/* =========================================
+   BREADCRUMB & TITLE
+========================================= */
+
+.reader-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 15px;
+}
+
+.breadcrumb {
+  font-size: 12px;
+  color: var(--text-sub);
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.breadcrumb a {
+  color: var(--text-sub);
+}
+
+.chapter-title {
+  font-size: 20px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* =========================================
+   CHAPTER NAVIGATION BAR
+========================================= */
+
+.chap-nav-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+  background: var(--bg-card);
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+}
+
+.chap-select {
+  background: var(--bg-btn);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.btn-nav {
+  background: var(--bg-btn);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-nav:hover {
+  background: var(--accent-color);
+}
+
+.btn-nav:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* =========================================
+   READER IMAGES
+========================================= */
+
+.image-list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 300px;
+
+  /* CHỐNG CHỌN */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/*
+   QUAN TRỌNG:
+
+   pointer-events: none giúp người dùng không click trực tiếp
+   vào ảnh để lưu/kéo ảnh.
+
+   Ảnh vẫn hiển thị bình thường.
+*/
+
+.image-list-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+
+  pointer-events: none;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+
+  -webkit-user-drag: none;
+
+  /* Không cho trình duyệt kéo ảnh */
+  -webkit-touch-callout: none;
+
+  /* Giảm một số hành vi chọn ảnh */
+  touch-action: pan-y;
+}
+
+/*
+   Lớp phủ bảo vệ ảnh.
+
+   Người dùng vẫn cuộn bình thường,
+   nhưng không thao tác trực tiếp vào img.
+*/
+
+.image-page {
+  position: relative;
+  width: 100%;
+  line-height: 0;
+}
+
+.image-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  background: transparent;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  pointer-events: auto;
+}
+
+/* =========================================
+   FOOTER NAV BAR
+========================================= */
+
+.bottom-nav {
+  margin-top: 25px;
+  margin-bottom: 40px;
+}
+
+/* =========================================
+   FOOTER
+========================================= */
+
+.footer {
+  background: #181724;
+  border-top: 1px solid var(--border-color);
+  padding: 20px 15px;
+  font-size: 11px;
+  color: var(--text-sub);
+  text-align: center;
+
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .reader-container {
+    padding: 10px;
+  }
+
+  .chapter-title {
+    font-size: 17px;
+  }
+
+  .chap-nav-bar {
+    gap: 5px;
+    padding: 8px;
+  }
+
+  .btn-nav {
+    padding: 7px 10px;
+  }
+
+  .chap-select {
+    max-width: 180px;
+    padding: 7px 8px;
+  }
+
+  .image-list-container {
+    max-width: 100%;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+  <!-- =========================================
+       HEADER
+  ========================================== -->
+
+  <div class="header-top">
+
+    <div class="logo">
+      <a href="Maubia_2.html">
+        <img
+          src="Hinh/genben-logo.png"
+          alt="Logo"
+          draggable="false"
+        >
+      </a>
+    </div>
+
+    <div class="nav-top">
+      <a href="Maubia_2.html">TRANG CHỦ</a>
+    </div>
+
+  </div>
+
+
+  <!-- =========================================
+       READER
+  ========================================== -->
+
+  <div class="reader-container">
+
+    <!-- BREADCRUMB -->
+
+    <div class="breadcrumb">
+
+      <a href="Maubia_2.html">
+        Home
+      </a>
+
+      /
+
+      <a
+        id="mangaLink"
+        href="Maubia_2.html"
+      >
+        Đang tải...
+      </a>
+
+      /
+
+      <span id="chapBreadcrumb">
+        Chapter --
+      </span>
+
+    </div>
+
+
+    <!-- TÊN TRUYỆN + CHAPTER -->
+
+    <h1
+      class="chapter-title"
+      id="mangaChapterTitle"
+    >
+      Đang tải chapter...
+    </h1>
+
+
+    <!-- =========================================
+         THANH CHUYỂN CHAPTER PHÍA TRÊN
+    ========================================== -->
+
+    <div class="chap-nav-bar">
+
+      <button
+        class="btn-nav"
+        id="prevBtnTop"
+        onclick="navigateChapter('prev')"
+      >
+        ⬅
+      </button>
+
+
+      <select
+        class="chap-select"
+        id="chapSelectTop"
+        onchange="onSelectChapter(this.value)"
+      ></select>
+
+
+      <button
+        class="btn-nav"
+        id="nextBtnTop"
+        onclick="navigateChapter('next')"
+      >
+        ➔
+      </button>
+
+    </div>
+
+
+    <!-- =========================================
+         KHU VỰC ẢNH TRUYỆN
+    ========================================== -->
+
+    <div
+      class="image-list-container"
+      id="imageList"
+    >
+
+      <p
+        style="
+          padding:40px;
+          text-align:center;
+          color:var(--text-sub);
+        "
+      >
+        Đang tải hình ảnh chapter...
+      </p>
+
+    </div>
+
+
+    <!-- =========================================
+         THANH CHUYỂN CHAPTER PHÍA DƯỚI
+    ========================================== -->
+
+    <div class="chap-nav-bar bottom-nav">
+
+      <button
+        class="btn-nav"
+        id="prevBtnBottom"
+        onclick="navigateChapter('prev')"
+      >
+        ⬅
+      </button>
+
+
+      <select
+        class="chap-select"
+        id="chapSelectBottom"
+        onchange="onSelectChapter(this.value)"
+      ></select>
+
+
+      <button
+        class="btn-nav"
+        id="nextBtnBottom"
+        onclick="navigateChapter('next')"
+      >
+        ➔
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================
+       FOOTER
+  ========================================== -->
+
+  <div class="footer">
+
+    <div>
+      © 2026 Genben Manga. All rights reserved
+    </div>
+
+  </div>
+
+
+<script type="text/javascript">
+
+/* =========================================================
+   SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+  'https://ngfodgexhzghgrczaejl.supabase.co';
+
+const SUPABASE_KEY =
+  'sb_publishable_czWnJAV3rA8_TSllTSU15A_sgTkaAV7';
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================================================
+   BIẾN
+========================================================= */
+
+let currentChapId = null;
+
+let currentTruyenId = null;
+
+let chapterList = [];
+
+let currentIndex = -1;
+
+
+/* =========================================================
+   LẤY CHAPTER ID TỪ URL
+========================================================= */
+
+const urlParams =
+  new URLSearchParams(
+    window.location.search
+  );
+
+currentChapId =
+  urlParams.get('chap_id');
+
+
+/* =========================================================
+   LOAD KHI TRANG MỞ
+========================================================= */
+
+window.addEventListener(
+  'DOMContentLoaded',
+  () => {
+
+    /* BẬT BẢO VỆ */
+
+    enableImageProtection();
+
+
+    if (currentChapId) {
+
+      loadChapterData(
+        currentChapId
+      );
+
+    } else {
+
+      document.getElementById(
+        'mangaChapterTitle'
+      ).innerText =
+        "Không tìm thấy Chapter!";
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   LOAD CHAPTER
+========================================================= */
+
+async function loadChapterData(chapId) {
+
+  try {
+
+    /* =====================================================
+       1. LẤY CHAPTER
+       
+       Dùng bảng:
+       Chapters
+       
+       Không dùng Chapter cũ nữa.
+    ===================================================== */
+
+    const {
+      data: chapData,
+      error: chapError
+    } =
+      await supabaseClient
+
+        .from('Chapters')
+
+        .select(`
+          id,
+          ten_chap,
+          link_html,
+          truyen_id
+        `)
+
+        .eq(
+          'id',
+          chapId
+        )
+
+        .single();
+
+
+    if (
+      chapError ||
+      !chapData
+    ) {
+
+      throw (
+        chapError ||
+        new Error(
+          'Không tìm thấy chapter'
+        )
+      );
+
+    }
+
+
+    /* =====================================================
+       LƯU TRUYỆN ID
+    ===================================================== */
+
+    currentTruyenId =
+      chapData.truyen_id;
+
+
+    /* =====================================================
+       2. LẤY THÔNG TIN TRUYỆN
+       
+       Chapters.truyen_id
+                ↓
+       Truyện.id
+    ===================================================== */
+
+    const {
+      data: truyenData,
+      error: truyenError
+    } =
+      await supabaseClient
+
+        .from('Truyện')
+
+        .select(`
+          id,
+          ten_truyen
+        `)
+
+        .eq(
+          'id',
+          currentTruyenId
+        )
+
+        .single();
+
+
+    if (truyenError) {
+
+      console.warn(
+        'Không lấy được thông tin truyện:',
+        truyenError
+      );
+
+    }
+
+
+    const mangaName =
+      truyenData &&
+      truyenData.ten_truyen
+        ? truyenData.ten_truyen
+        : 'Truyện';
+
+
+    /* =====================================================
+       3. HIỂN THỊ TÊN TRUYỆN
+    ===================================================== */
+
+    document.getElementById(
+      'mangaLink'
+    ).href =
+      `chitiet.html?id=${currentTruyenId}`;
+
+
+    document.getElementById(
+      'mangaLink'
+    ).innerText =
+      mangaName;
+
+
+    document.getElementById(
+      'chapBreadcrumb'
+    ).innerText =
+      chapData.ten_chap || 'Chapter';
+
+
+    document.getElementById(
+      'mangaChapterTitle'
+    ).innerText =
+      `${mangaName} - ${chapData.ten_chap || 'Chapter'}`;
+
+
+    /* =====================================================
+       4. LẤY TOÀN BỘ ẢNH CHAPTER
+       
+       Bảng:
+       Chapter_Pages
+       
+       chapter_id
+          ↓
+       Chapters.id
+    ===================================================== */
+
+    const {
+      data: pageData,
+      error: pageError
+    } =
+      await supabaseClient
+
+        .from('Chapter_Pages')
+
+        .select(`
+          id,
+          chapter_id,
+          so_trang,
+          link_anh
+        `)
+
+        .eq(
+          'chapter_id',
+          chapId
+        )
+
+        .order(
+          'so_trang',
+          {
+            ascending: true
+          }
+        );
+
+
+    if (pageError) {
+
+      throw pageError;
+
+    }
+
+
+    /* =====================================================
+       5. HIỂN THỊ ẢNH
+    ===================================================== */
+
+    renderImages(
+      pageData || []
+    );
+
+
+    /* =====================================================
+       6. LOAD DANH SÁCH CHAPTER
+    ===================================================== */
+
+    await loadAllChaptersOfManga(
+      currentTruyenId,
+      chapId
+    );
+
+
+  } catch (err) {
+
+    console.error(
+      "Lỗi khi tải dữ liệu chapter:",
+      err
+    );
+
+
+    document.getElementById(
+      'mangaChapterTitle'
+    ).innerText =
+      'Không thể tải chapter';
+
+
+    document.getElementById(
+      'imageList'
+    ).innerHTML =
+
+      `
+      <p
+        style="
+          padding:20px;
+          text-align:center;
+          color:#ff5555;
+        "
+      >
+        Không thể tải dữ liệu chapter.
+      </p>
+      `;
+
+  }
+
+}
+
+
+/* =========================================================
+   RENDER ẢNH
+========================================================= */
+
+function renderImages(pageData) {
+
+  const container =
+    document.getElementById(
+      'imageList'
+    );
+
+
+  container.innerHTML = '';
+
+
+  if (
+    !pageData ||
+    pageData.length === 0
+  ) {
+
+    container.innerHTML =
+
+      `
+      <p
+        style="
+          padding:30px;
+          color:var(--text-sub);
+          text-align:center;
+        "
+      >
+        Chưa có hình ảnh cho chapter này.
+      </p>
+      `;
+
+    return;
+
+  }
+
+
+  /* =====================================================
+     SẮP XẾP LẠI THEO SỐ TRANG
+  ===================================================== */
+
+  const pages =
+    [...pageData].sort(
+      (a, b) =>
+        Number(a.so_trang || 0) -
+        Number(b.so_trang || 0)
+    );
+
+
+  /* =====================================================
+     TẠO ẢNH
+  ===================================================== */
+
+  pages.forEach(
+    (page, idx) => {
+
+      if (
+        !page.link_anh
+      ) {
+        return;
+      }
+
+
+      /* Wrapper */
+
+      const wrapper =
+        document.createElement(
+          'div'
+        );
+
+
+      wrapper.className =
+        'image-page';
+
+
+      /* Ảnh */
+
+      const img =
+        document.createElement(
+          'img'
+        );
+
+
+      img.src =
+        page.link_anh;
+
+
+      img.alt =
+        `Trang ${page.so_trang || idx + 1}`;
+
+
+      /*
+         Không lazy load quá mạnh.
+
+         Với truyện dài, lazy loading có thể khiến
+         người dùng cuộn nhanh bị trễ ảnh.
+
+         Dùng eager cho trang đầu,
+         lazy cho các trang sau.
+      */
+
+      if (idx === 0) {
+
+        img.loading =
+          'eager';
+
+      } else {
+
+        img.loading =
+          'lazy';
+
+      }
+
+
+      img.decoding =
+        'async';
+
+
+      /*
+         CHỐNG KÉO ẢNH
+      */
+
+      img.draggable =
+        false;
+
+
+      /*
+         CHẶN MENU CHUỘT PHẢI
+      */
+
+      img.addEventListener(
+        'contextmenu',
+        function(e) {
+
+          e.preventDefault();
+
+          return false;
+
+        }
+      );
+
+
+      /*
+         CHẶN DRAG
+      */
+
+      img.addEventListener(
+        'dragstart',
+        function(e) {
+
+          e.preventDefault();
+
+          return false;
+
+        }
+      );
+
+
+      /*
+         Nếu ảnh lỗi
+      */
+
+      img.addEventListener(
+        'error',
+        function() {
+
+          wrapper.innerHTML =
+
+            `
+            <div
+              style="
+                width:100%;
+                padding:30px 10px;
+                text-align:center;
+                color:var(--text-sub);
+                background:#1c1b29;
+                line-height:1.5;
+              "
+            >
+              Không thể tải trang ${page.so_trang || idx + 1}
+            </div>
+            `;
+
+        }
+      );
+
+
+      wrapper.appendChild(
+        img
+      );
+
+
+      container.appendChild(
+        wrapper
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   LOAD TOÀN BỘ CHAPTER CỦA TRUYỆN
+========================================================= */
+
+async function loadAllChaptersOfManga(
+  truyenId,
+  activeChapId
+) {
+
+  try {
+
+    /* =====================================================
+       LẤY CHAPTER
+    ===================================================== */
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+
+        .from('Chapters')
+
+        .select(`
+          id,
+          ten_chap,
+          truyen_id
+        `)
+
+        .eq(
+          'truyen_id',
+          truyenId
+        )
+
+        .order(
+          'id',
+          {
+            ascending: true
+          }
+        );
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    chapterList =
+      data || [];
+
+
+    /* =====================================================
+       TÌM CHAPTER HIỆN TẠI
+    ===================================================== */
+
+    currentIndex =
+      chapterList.findIndex(
+        item =>
+          String(item.id) ===
+          String(activeChapId)
+      );
+
+
+    /* =====================================================
+       SELECT TOP / BOTTOM
+    ===================================================== */
+
+    const selectTop =
+      document.getElementById(
+        'chapSelectTop'
+      );
+
+
+    const selectBottom =
+      document.getElementById(
+        'chapSelectBottom'
+      );
+
+
+    selectTop.innerHTML =
+      '';
+
+
+    selectBottom.innerHTML =
+      '';
+
+
+    /* =====================================================
+       KHÔNG CÓ CHAPTER
+    ===================================================== */
+
+    if (
+      chapterList.length === 0
+    ) {
+
+      selectTop.innerHTML =
+        '<option>Chưa có chapter</option>';
+
+
+      selectBottom.innerHTML =
+        '<option>Chưa có chapter</option>';
+
+
+      document.getElementById(
+        'prevBtnTop'
+      ).disabled = true;
+
+
+      document.getElementById(
+        'prevBtnBottom'
+      ).disabled = true;
+
+
+      document.getElementById(
+        'nextBtnTop'
+      ).disabled = true;
+
+
+      document.getElementById(
+        'nextBtnBottom'
+      ).disabled = true;
+
+
+      return;
+
+    }
+
+
+    /* =====================================================
+       TẠO DROPDOWN
+    ===================================================== */
+
+    chapterList.forEach(
+      item => {
+
+        const opt1 =
+          document.createElement(
+            'option'
+          );
+
+
+        opt1.value =
+          item.id;
+
+
+        opt1.innerText =
+          item.ten_chap ||
+          `Chapter ${item.id}`;
+
+
+        if (
+          String(item.id) ===
+          String(activeChapId)
+        ) {
+
+          opt1.selected =
+            true;
+
+        }
+
+
+        const opt2 =
+          opt1.cloneNode(
+            true
+          );
+
+
+        selectTop.appendChild(
+          opt1
+        );
+
+
+        selectBottom.appendChild(
+          opt2
+        );
+
+      }
+    );
+
+
+    /* =====================================================
+       NÚT PREV
+    ===================================================== */
+
+    const isFirst =
+      currentIndex <= 0;
+
+
+    document.getElementById(
+      'prevBtnTop'
+    ).disabled =
+      isFirst;
+
+
+    document.getElementById(
+      'prevBtnBottom'
+    ).disabled =
+      isFirst;
+
+
+    /* =====================================================
+       NÚT NEXT
+    ===================================================== */
+
+    const isLast =
+      currentIndex ===
+      chapterList.length - 1;
+
+
+    document.getElementById(
+      'nextBtnTop'
+    ).disabled =
+      isLast;
+
+
+    document.getElementById(
+      'nextBtnBottom'
+    ).disabled =
+      isLast;
+
+
+  } catch (err) {
+
+    console.error(
+      "Lỗi khi tải danh sách chapter:",
+      err
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   CHUYỂN CHAPTER BẰNG SELECT
+========================================================= */
+
+function onSelectChapter(
+  chapId
+) {
+
+  if (!chapId) {
+    return;
+  }
+
+
+  window.location.href =
+    `doctruyen.html?chap_id=${encodeURIComponent(chapId)}`;
+
+}
+
+
+/* =========================================================
+   NEXT / PREVIOUS
+========================================================= */
+
+function navigateChapter(
+  direction
+) {
+
+  if (
+    direction === 'prev' &&
+    currentIndex > 0
+  ) {
+
+    const targetId =
+      chapterList[
+        currentIndex - 1
+      ].id;
+
+
+    window.location.href =
+      `doctruyen.html?chap_id=${encodeURIComponent(targetId)}`;
+
+
+    return;
+
+  }
+
+
+  if (
+    direction === 'next' &&
+    currentIndex <
+    chapterList.length - 1
+  ) {
+
+    const targetId =
+      chapterList[
+        currentIndex + 1
+      ].id;
+
+
+    window.location.href =
+      `doctruyen.html?chap_id=${encodeURIComponent(targetId)}`;
+
+  }
+
+}
+
+
+/* =========================================================
+   BẢO VỆ ẢNH / CHỐNG LẤY ẢNH CƠ BẢN
+========================================================= */
+
+function enableImageProtection() {
+
+
+  /* =====================================================
+     1. CHẶN CHUỘT PHẢI TOÀN TRANG
+  ===================================================== */
+
+  document.addEventListener(
+    'contextmenu',
+    function(e) {
+
+      e.preventDefault();
+
+      return false;
+
+    },
+    true
+  );
+
+
+  /* =====================================================
+     2. CHẶN DRAG TOÀN TRANG
+  ===================================================== */
+
+  document.addEventListener(
+    'dragstart',
+    function(e) {
+
+      e.preventDefault();
+
+      return false;
+
+    },
+    true
+  );
+
+
+  /* =====================================================
+     3. CHẶN SELECTSTART
+  ===================================================== */
+
+  document.addEventListener(
+    'selectstart',
+    function(e) {
+
+      e.preventDefault();
+
+      return false;
+
+    },
+    true
+  );
+
+
+  /* =====================================================
+     4. CHẶN COPY
+  ===================================================== */
+
+  document.addEventListener(
+    'copy',
+    function(e) {
+
+      e.preventDefault();
+
+      return false;
+
+    },
+    true
+  );
+
+
+  /* =====================================================
+     5. CHẶN CUT
+  ===================================================== */
+
+  document.addEventListener(
+    'cut',
+    function(e) {
+
+      e.preventDefault();
+
+      return false;
+
+    },
+    true
+  );
+
+
+  /* =====================================================
+     6. CHẶN PHÍM TẮT
+  ===================================================== */
+
+  document.addEventListener(
+    'keydown',
+    function(e) {
+
+      const key =
+        String(e.key).toLowerCase();
+
+
+      /*
+         F12
+      */
+
+      if (
+        e.key === 'F12'
+      ) {
+
+        e.preventDefault();
+
+        return false;
+
+      }
+
+
+
+      /*
+         CTRL + S
+         Lưu trang
+      */
+
+      if (
+        e.ctrlKey &&
+        key === 's'
+      ) {
+
+        e.preventDefault();
+
+        return false;
+
+      }
+
+
+      /*
+         CTRL + U
+         Xem source
+      */
+
+      if (
+        e.ctrlKey &&
+        key === 'u'
+      ) {
+
+        e.preventDefault();
+
+        return false;
+
+      }
+
+
+      /*
+         CTRL + P
+         In trang
+      */
+
+      if (
+        e.ctrlKey &&
+        key === 'p'
+      ) {
+
+        e.preventDefault();
+
+        return false;
+
+      }
+
+
+      /*
+         CTRL + C
+         Copy
+      */
+
+      if (
+        e.ctrlKey &&
+        key === 'c'
+      ) {
+
+        e.preventDefault();
+
+        return false;
+
+      }
+
+
+      /*
+         CTRL + SHIFT + I
+         DevTools
+      */
+
+      if (
+        e.ctrlKey &&
+        e.shiftKey &&
+        key === 'i'
+      ) {
+
+        e.preventDefault();
+
+        return false;
+
+      }
+
+
+      /*
+         CTRL + SHIFT + J
+         Console
+      */
+
+      if (
+        e.ctrlKey &&
+        e.shiftKey &&
+        key === 'j'
+      ) {
+
+        e.preventDefault();
+
+        return false;
+
+      }
+
+
+      /*
+         CTRL + SHIFT + C
+         Inspect element
+      */
+
+      if (
+        e.ctrlKey &&
+        e.shiftKey &&
+        key === 'c'
+      ) {
+
+        e.preventDefault();
+
+        return false;
+
+      }
+
+
+      /*
+         CTRL + SHIFT + S
+      */
+
+      if (
+        e.ctrlKey &&
+        e.shiftKey &&
+        key === 's'
+      ) {
+
+        e.preventDefault();
+
+        return false;
+
+      }
+
+    },
+    true
+  );
+
+
+  /* =====================================================
+     7. CHẶN TOUCH LONG PRESS TRÊN ẢNH
+  ===================================================== */
+
+  document.addEventListener(
+    'touchstart',
+    function(e) {
+
+      if (
+        e.target &&
+        e.target.tagName === 'IMG'
+      ) {
+
+        e.preventDefault();
+
+      }
+
+    },
+    {
+      passive: false,
+      capture: true
+    }
+  );
+
+
+  /* =====================================================
+     8. CHẶN GESTURE TRÊN IOS
+  ===================================================== */
+
+  document.addEventListener(
+    'gesturestart',
+    function(e) {
+
+      e.preventDefault();
+
+    },
+    {
+      passive: false
+    }
+  );
+
+
+  /* =====================================================
+     9. CHẶN KÉO THẢ
+  ===================================================== */
+
+  document.addEventListener(
+    'drop',
+    function(e) {
+
+      e.preventDefault();
+
+      return false;
+
+    },
+    true
+  );
+
+
+  /* =====================================================
+     10. CHẶN DOUBLE CLICK TRÊN ẢNH
+  ===================================================== */
+
+  document.addEventListener(
+    'dblclick',
+    function(e) {
+
+      if (
+        e.target &&
+        e.target.tagName === 'IMG'
+      ) {
+
+        e.preventDefault();
+
+      }
+
+    },
+    true
+  );
+
+}
+
+
+/* =========================================================
+   NGĂN MỘT SỐ CÁCH MỞ DEVTOOLS PHỔ BIẾN
+
+   Đây chỉ là lớp cản phía trình duyệt,
+   không phải bảo mật tuyệt đối.
+========================================================= */
+
+(function devToolsProtection() {
+
+  let devtoolsOpen = false;
+
+
+  const threshold = 160;
+
+
+  setInterval(
+    function() {
+
+      const widthDiff =
+        window.outerWidth -
+        window.innerWidth;
+
+
+      const heightDiff =
+        window.outerHeight -
+        window.innerHeight;
+
+
+      if (
+        widthDiff > threshold ||
+        heightDiff > threshold
+      ) {
+
+        if (!devtoolsOpen) {
+
+          devtoolsOpen =
+            true;
+
+          /*
+             Không tự redirect hoặc xóa trang.
+
+             Chỉ đánh dấu trạng thái.
+          */
+
+          document.documentElement
+            .setAttribute(
+              'data-devtools',
+              'open'
+            );
+
+        }
+
+      } else {
+
+        devtoolsOpen =
+          false;
+
+        document.documentElement
+          .removeAttribute(
+            'data-devtools'
+          );
+
+      }
+
+    },
+    1000
+  );
+
+})();
+
+
+/* =========================================================
+   NGĂN HÌNH ẢNH BỊ TẢI LẠI BẰNG MENU CHUỘT PHẢI
+========================================================= */
+
+window.addEventListener(
+  'load',
+  function() {
+
+    document
+      .querySelectorAll('img')
+      .forEach(
+        img => {
+
+          img.setAttribute(
+            'draggable',
+            'false'
+          );
+
+
+          img.addEventListener(
+            'dragstart',
+            function(e) {
+
+              e.preventDefault();
+
+            }
+          );
+
+        }
+      );
+
+  }
+);
+
+</script>
+
+</body>
+</html>

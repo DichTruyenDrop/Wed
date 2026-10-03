@@ -1,0 +1,3393 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genben - Web Đọc Truyện Tranh Mobile</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style type="text/css">
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+input, textarea, select {
+  -webkit-user-select: text !important;
+  -moz-user-select: text !important;
+  -ms-user-select: text !important;
+  user-select: text !important;
+}
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  pointer-events: auto;
+}
+
+/* =========================
+   THEME TỐI
+========================= */
+:root {
+  --bg-main: #12111a;
+  --bg-header: #181722;
+  --bg-card: #000000;
+  --bg-subcard: #0a0a0a;
+  --border-color: #222030;
+  --text-main: #ffffff;
+  --text-sub: #8a889d;
+  --btn-bg: #1a1926;
+}
+
+/* =========================
+   THEME SÁNG
+========================= */
+body.light-mode {
+  --bg-main: #f4f4f7;
+  --bg-header: #ffffff;
+  --bg-card: #ffffff;
+  --bg-subcard: #f8f8fa;
+  --border-color: #e1e1e8;
+  --text-main: #111111;
+  --text-sub: #666666;
+  --btn-bg: #eeeeee;
+}
+
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  overflow-x: hidden;
+  transition: background 0.3s, color 0.3s;
+}
+
+a {
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+/* =========================
+   HEADER TOP
+========================= */
+.header-top {
+  background-color: var(--bg-header);
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  position: relative;
+  z-index: 10;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.logo img {
+  height: 32px;
+  vertical-align: middle;
+}
+
+.nav-top {
+  display: flex;
+}
+
+.nav-top a {
+  margin-right: 18px;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--text-sub);
+  text-transform: uppercase;
+}
+
+.nav-top a:hover,
+.nav-top a.active {
+  color: var(--text-main);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--text-sub);
+  font-size: 14px;
+}
+
+.theme-toggle-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-btn {
+  background: var(--btn-bg);
+  border-radius: 18px;
+  padding: 5px 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+}
+
+.menu-toggle {
+  font-size: 20px;
+  cursor: pointer;
+  display: none;
+  color: var(--text-main);
+  background: none;
+  border: none;
+}
+
+/* =========================
+   SEARCH
+========================= */
+.search-bar-wrapper {
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 20px;
+  position: relative;
+  z-index: 9;
+}
+
+.search-bar-wrapper.hidden {
+  display: none;
+}
+
+.search-input-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.search-input-group input {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  border-radius: 4px;
+  outline: none;
+}
+
+.search-input-group button {
+  padding: 8px 16px;
+  background: #000;
+  color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.advanced-link {
+  color: var(--text-sub);
+  font-size: 12px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.advanced-link:hover {
+  color: var(--text-main);
+}
+
+/* SEARCH DROPDOWN */
+.search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 20px;
+  right: 20px;
+  background: #ffffff;
+  color: #111111;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+.search-dropdown.hidden {
+  display: none;
+}
+
+.search-dropdown li {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.search-dropdown li:hover {
+  background: #f0f0f0;
+}
+
+.search-dropdown li strong {
+  color: #000;
+  font-weight: 800;
+}
+
+/* =========================
+   HEADER SUB
+========================= */
+.header-sub {
+  background-color: var(--bg-header);
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 12px;
+  font-weight: 700;
+  position: relative;
+}
+
+.sub-links {
+  display: flex;
+  gap: 15px;
+  color: var(--text-sub);
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.sub-links a:hover {
+  color: var(--text-main);
+}
+
+/* =========================
+   GENRE DROPDOWN
+========================= */
+.genre-dropdown {
+  display: none;
+  background: var(--bg-card);
+  width: 100%;
+  padding: 15px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 99;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.genre-dropdown.open {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+}
+
+.genre-item {
+  color: var(--text-sub);
+  font-size: 11px;
+  text-transform: uppercase;
+  padding: 4px;
+  font-weight: 700;
+}
+
+.genre-item:hover {
+  color: var(--text-main);
+}
+
+/* =========================
+   MOBILE SIDE NAV
+========================= */
+.side-nav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  background-color: var(--bg-card);
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 50px;
+  box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+}
+
+.side-nav .closebtn {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  font-size: 30px;
+  color: var(--text-sub);
+  cursor: pointer;
+}
+
+.side-nav-content {
+  padding: 0 20px;
+}
+
+.side-nav-btns {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.side-nav-btns .btn-mobile {
+  flex: 1;
+  padding: 8px 0;
+  background: var(--btn-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  text-align: center;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.side-nav-links a {
+  padding: 12px 0;
+  text-decoration: none;
+  font-size: 13px;
+  color: var(--text-sub);
+  display: block;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border-color);
+  text-transform: uppercase;
+}
+
+/* =========================
+   MAIN LAYOUT
+========================= */
+.main-wrapper {
+  max-width: 1280px;
+  margin: 15px auto;
+  padding: 0 15px;
+  display: flex;
+  gap: 20px;
+}
+
+.content-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-right {
+  width: 320px;
+}
+
+/* =========================
+   POPULAR SLIDER
+========================= */
+.popular-section {
+  background: var(--bg-card);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.popular-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 8px;
+}
+
+.popular-header h2 {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--text-main);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.slider-controls {
+  display: flex;
+  gap: 4px;
+}
+
+.slider-btn {
+  background: var(--btn-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+
+.popular-slider-wrapper {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.popular-slider-container {
+  display: flex;
+  gap: 12px;
+  transition: transform 0.3s ease-in-out;
+}
+
+.popular-card {
+  flex: 0 0 calc(50% - 6px);
+  background: var(--bg-subcard);
+  border-radius: 4px;
+  padding: 8px;
+  display: flex;
+  gap: 10px;
+  border: 1px solid var(--border-color);
+  box-sizing: border-box;
+}
+
+@media screen and (min-width: 768px) {
+  .popular-card {
+    flex: 0 0 calc(33.333% - 8px);
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .popular-card {
+    flex: 0 0 calc(25% - 9px);
+  }
+}
+
+.popular-cover {
+  position: relative;
+  width: 75px;
+  height: 105px;
+  flex-shrink: 0;
+}
+
+.popular-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 3px;
+}
+
+.badge-new {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  background: #00cec9;
+  color: #000;
+  font-size: 8px;
+  font-weight: 900;
+  padding: 2px 4px;
+  border-radius: 50%;
+  text-transform: uppercase;
+}
+
+.popular-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: hidden;
+  flex: 1;
+}
+
+.popular-title {
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin-bottom: 3px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.popular-title a {
+  color: var(--text-main);
+}
+
+.popular-date {
+  font-size: 9px;
+  color: var(--text-sub);
+  margin-bottom: 6px;
+}
+
+.popular-chapters {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.chip-chap {
+  background: var(--btn-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-sub);
+  font-size: 9px;
+  padding: 3px 6px;
+  border-radius: 12px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =====================================================
+   LATEST MANGA GRID
+===================================================== */
+
+.section-title-plain {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text-main);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.latest-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 190px);
+  gap: 15px;
+  margin-bottom: 20px;
+  align-items: start;
+}
+
+.manga-card {
+  width: 190px;
+  min-width: 190px;
+  background: var(--bg-card);
+  border-radius: 6px;
+  padding: 0;
+  border: 1px solid var(--border-color);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.manga-img-box {
+  position: relative;
+  width: 190px;
+  height: 250px;
+  min-width: 190px;
+  min-height: 250px;
+  max-width: 190px;
+  max-height: 250px;
+  border-radius: 0;
+  overflow: hidden;
+  margin-bottom: 8px;
+  background: #000;
+}
+
+.manga-img-box img {
+  display: block;
+  width: 190px;
+  height: 250px;
+  min-width: 190px;
+  min-height: 250px;
+  max-width: 190px;
+  max-height: 250px;
+  object-fit: cover;
+}
+
+.badge-hot-red {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: #ff2a5f;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 900;
+  padding: 2px 5px;
+  border-radius: 3px;
+  z-index: 2;
+}
+
+.manga-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  margin: 0 8px 4px 8px;
+}
+
+.rating-stars {
+  color: #fdcb6e;
+  font-size: 10px;
+  margin: 0 8px 6px 8px;
+}
+
+.chap-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--bg-subcard);
+  padding: 4px 6px;
+  border-radius: 4px;
+  margin: 0 8px 8px 8px;
+  font-size: 10px;
+  border: 1px solid var(--border-color);
+}
+
+.chap-list-item a {
+  color: var(--text-sub);
+  font-weight: 600;
+}
+
+.tag-new-small {
+  background: #ff2a5f;
+  color: #fff;
+  font-size: 8px;
+  font-weight: 800;
+  padding: 1px 3px;
+  border-radius: 2px;
+}
+
+.load-more-btn {
+  display: block;
+  width: 100%;
+  background: var(--bg-card);
+  color: var(--text-main);
+  text-align: center;
+  padding: 10px 0;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 4px;
+  margin: 20px 0;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.section-header-sidebar {
+  background: var(--btn-bg);
+  color: var(--text-main);
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-radius: 3px 3px 0 0;
+  border: 1px solid var(--border-color);
+  border-bottom: none;
+}
+
+.sidebar-box {
+  background: var(--bg-card);
+  border-radius: 0 6px 6px 6px;
+  padding: 12px;
+  font-size: 12px;
+  color: var(--text-sub);
+  border: 1px solid var(--border-color);
+  margin-bottom: 20px;
+}
+
+.top-day-widget {
+  background: var(--bg-card);
+  border-radius: 6px;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.top-day-btn {
+  background: var(--btn-bg);
+  color: var(--text-main);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-bottom: 12px;
+  border: 1px solid var(--border-color);
+}
+
+.top-item {
+  display: flex;
+  gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.top-item:last-child {
+  border-bottom: none;
+}
+
+.top-item img {
+  width: 50px;
+  height: 70px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.top-item-info {
+  flex: 1;
+}
+
+.top-item-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-main);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+
+.top-chap-link {
+  background: var(--btn-bg);
+  color: var(--text-sub);
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border-color);
+  margin-top: 30px;
+  padding: 20px 15px;
+  font-size: 11px;
+  color: var(--text-sub);
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-weight: 700;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--text-sub);
+}
+
+/* =========================
+   AUTH
+========================= */
+.auth-btn-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-auth-nav {
+  background: #252438;
+  color: #fff;
+  border: 1px solid #373650;
+  padding: 6px 16px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-auth-nav:hover {
+  background: #ff2a5f;
+  border-color: #ff2a5f;
+}
+
+.auth-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 15px;
+}
+
+.auth-card {
+  background: #181726;
+  border: 1px solid #27273a;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 420px;
+  padding: 25px 30px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  box-sizing: border-box;
+}
+
+.auth-close-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.auth-close-btn:hover {
+  color: #fff;
+}
+
+.auth-title {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #fff;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+}
+
+.auth-field {
+  margin-bottom: 15px;
+}
+
+.auth-field label {
+  display: block;
+  font-size: 12px;
+  color: #a0a0b0;
+  margin-bottom: 6px;
+}
+
+.auth-field input,
+.auth-field select {
+  width: 100%;
+  background: #121120;
+  border: 1px solid #2a293e;
+  border-radius: 4px;
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.auth-field input:focus {
+  border-color: #ff2a5f;
+}
+
+.auth-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 15px;
+}
+
+.auth-row label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.btn-auth-submit {
+  width: 100%;
+  background: #313043;
+  border: 1px solid #44435d;
+  color: #fff;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.btn-auth-submit:hover {
+  background: #ff2a5f;
+  border-color: #ff2a5f;
+}
+
+.auth-links {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 12px;
+}
+
+.auth-links a {
+  color: #9ca3af;
+  text-decoration: none;
+  display: inline-block;
+  margin: 4px 0;
+}
+
+.auth-links a:hover {
+  color: #ff2a5f;
+  text-decoration: underline;
+}
+
+.logged-user-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 13px;
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+@media screen and (max-width: 768px) {
+
+  .header-top {
+    padding: 10px 15px;
+  }
+
+  .nav-top {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .auth-btn-group {
+    display: none;
+  }
+
+  .main-wrapper {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .sidebar-right {
+    width: 100%;
+  }
+
+  .latest-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    width: 100%;
+  }
+
+  .manga-card {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .manga-img-box {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 19 / 25;
+    min-width: 0;
+    min-height: 0;
+    max-width: 100%;
+    max-height: none;
+  }
+
+  .manga-img-box img {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    max-width: 100%;
+    max-height: none;
+    object-fit: cover;
+  }
+
+  .sub-links a:not(.more-btn-mobile) {
+    display: none;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div id="mySidenav" class="side-nav">
+
+  <span
+    class="closebtn"
+    onclick="closeNav()">
+    &times;
+  </span>
+
+  <div class="side-nav-content">
+
+    <div
+      class="side-nav-btns"
+      id="mobile-auth-area">
+
+      <button
+        class="btn-mobile"
+        onclick="openAuthModal('signin'); closeNav();">
+        Sign in
+      </button>
+
+      <button
+        class="btn-mobile"
+        onclick="openAuthModal('signup'); closeNav();">
+        Sign up
+      </button>
+
+    </div>
+
+    <div class="side-nav-links">
+
+      <a href="Maubia_2.html">
+        Home
+      </a>
+
+      <a href="#">
+        About Us
+      </a>
+
+      <a href="#">
+        Request New Manga
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="header-top">
+
+  <div class="header-left">
+
+    <div class="logo">
+
+      <a href="Maubia_2.html">
+
+        <img
+          src="Hinh/genben-logo.png"
+          alt="Logo">
+
+      </a>
+
+    </div>
+
+    <div class="nav-top">
+
+      <a
+        href="Maubia_2.html"
+        class="active">
+
+        TRANG CHỦ
+
+      </a>
+
+      <a href="#">
+        Tất cả Webtoons ▾
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="header-right">
+
+    <button
+      class="theme-toggle-btn"
+      id="themeToggle"
+      onclick="toggleTheme()">
+
+      🌙
+
+    </button>
+
+    <div
+      class="search-btn"
+      id="searchToggleBtn">
+
+      🔍
+
+    </div>
+
+    <button
+      class="menu-toggle"
+      onclick="openNav()">
+
+      ☰
+
+    </button>
+
+  </div>
+
+</div>
+
+<div
+  id="searchBarWrapper"
+  class="search-bar-wrapper hidden">
+
+  <div class="search-input-group">
+
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search..."
+      autocomplete="off" />
+
+    <button id="searchSubmitBtn">
+      Search
+    </button>
+
+  </div>
+
+  <a
+    href="timkiem.html"
+    class="advanced-link">
+
+    Advanced
+
+  </a>
+
+  <ul
+    id="searchResultsDropdown"
+    class="search-dropdown hidden">
+  </ul>
+
+</div>
+
+<div class="header-sub">
+
+  <div class="sub-links">
+
+    <a href="lienhe.html">
+      LIÊN HỆ
+    </a>
+
+    <a href="#">
+      MANHWA
+    </a>
+
+    <a href="#">
+      MANHUA
+    </a>
+
+    <a
+      href="javascript:void(0)"
+      class="more-btn-mobile"
+      onclick="toggleGenre()">
+
+      HƠN ►
+
+    </a>
+
+  </div>
+
+  <div id="header-auth-area">
+
+    <div
+      class="auth-btn-group"
+      id="nav-guest-view">
+
+      <button
+        class="btn-auth-nav"
+        onclick="openAuthModal('signin')">
+
+        Sign In
+
+      </button>
+
+      <button
+        class="btn-auth-nav"
+        onclick="openAuthModal('signup')">
+
+        Sign Up
+
+      </button>
+
+    </div>
+
+    <div
+      class="logged-user-box"
+      id="nav-user-view"
+      style="display: none;">
+
+      <span>
+        Xin chào,
+        <b
+          id="user-display-name"
+          style="color: #ff2a5f;">
+        </b>
+      </span>
+
+      <button
+        class="btn-auth-nav"
+        onclick="handleSignOut()">
+
+        Sign Out
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <div
+    id="genreDropdown"
+    class="genre-dropdown">
+
+    <a href="#" class="genre-item">
+      Action
+    </a>
+
+    <a href="#" class="genre-item">
+      Adventure
+    </a>
+
+    <a href="#" class="genre-item">
+      Comedy
+    </a>
+
+    <a href="#" class="genre-item">
+      Fantasy
+    </a>
+
+    <a href="#" class="genre-item">
+      Gender Bender
+    </a>
+
+    <a href="#" class="genre-item">
+      Manhwa
+    </a>
+
+    <a href="#" class="genre-item">
+      Romance
+    </a>
+
+    <a href="#" class="genre-item">
+      Slice of Life
+    </a>
+
+  </div>
+
+</div>
+
+<div class="main-wrapper">
+
+  <div class="content-left">
+
+    <div class="popular-section">
+
+      <div class="popular-header">
+
+        <h2>
+          📖 TRUYỆN DO NHÓM DỊCH LÀM
+        </h2>
+
+        <div class="slider-controls">
+
+          <button
+            class="slider-btn"
+            onclick="scrollPopular(-1)">
+
+            ❮
+
+          </button>
+
+          <button
+            class="slider-btn"
+            onclick="scrollPopular(1)">
+
+            ❯
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="popular-slider-wrapper">
+
+        <div
+          class="popular-slider-container"
+          id="popularSlider">
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="section-title-plain">
+
+      LATEST MANGA UPDATES
+
+    </div>
+
+    <div
+      class="latest-grid"
+      id="latestGrid">
+    </div>
+
+    <button class="load-more-btn">
+      TẢI THÊM...
+    </button>
+
+  </div>
+
+  <div class="sidebar-right">
+
+    <div class="section-header-sidebar">
+
+      LỊCH SỬ ĐỌC SÁCH CỦA TÔI
+
+    </div>
+
+    <div class="sidebar-box">
+
+      Bạn không có gì trong lịch sử cả
+
+    </div>
+
+    <div class="top-day-widget">
+
+      <span class="top-day-btn">
+
+        Top Day
+
+      </span>
+
+      <div id="topDayContainer"></div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div class="footer">
+
+  <div class="footer-links">
+
+    <a href="Maubia_2.html">
+      HOME
+    </a>
+
+    <a href="#">
+      ABOUT US
+    </a>
+
+    <a href="#">
+      PRIVACY POLICY
+    </a>
+
+    <a href="#">
+      DMCA
+    </a>
+
+  </div>
+
+  <div class="copyright">
+
+    © 2026 Genben Manga . All rights reserved.
+
+  </div>
+
+</div>
+
+<div
+  class="auth-modal-overlay"
+  id="authModalOverlay">
+
+  <div
+    class="auth-card"
+    id="formSignIn">
+
+    <button
+      class="auth-close-btn"
+      onclick="closeAuthModal()">
+
+      ✕
+
+    </button>
+
+    <div class="auth-title">
+
+      SIGN IN
+
+    </div>
+
+    <div class="auth-field">
+
+      <label>
+        Email Address *
+      </label>
+
+      <input
+        type="email"
+        id="signinEmail"
+        placeholder="Email của bạn">
+
+    </div>
+
+    <div class="auth-field">
+
+      <label>
+        Password *
+      </label>
+
+      <input
+        type="password"
+        id="signinPassword"
+        placeholder="••••••••">
+
+    </div>
+
+    <div class="auth-row">
+
+      <label>
+
+        <input
+          type="checkbox"
+          id="rememberMe">
+
+        Remember Me
+
+      </label>
+
+    </div>
+
+    <button
+      class="btn-auth-submit"
+      onclick="submitSignIn()">
+
+      Log In
+
+    </button>
+
+    <div class="auth-links">
+
+      <a
+        href="javascript:void(0)"
+        onclick="switchForm('lost')">
+
+        Lost your password?
+
+      </a>
+
+      <br>
+
+      <a
+        href="javascript:void(0)"
+        onclick="switchForm('signup')">
+
+        Chưa có tài khoản? Đăng ký
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <div
+    class="auth-card"
+    id="formSignUp"
+    style="display: none;">
+
+    <button
+      class="auth-close-btn"
+      onclick="closeAuthModal()">
+
+      ✕
+
+    </button>
+
+    <div class="auth-title">
+
+      SIGN UP
+
+    </div>
+
+    <div class="auth-field">
+
+      <label>
+        Username *
+      </label>
+
+      <input
+        type="text"
+        id="signupUsername"
+        placeholder="Tên hiển thị">
+
+    </div>
+
+    <div class="auth-field">
+
+      <label>
+        Email Address *
+      </label>
+
+      <input
+        type="email"
+        id="signupEmail"
+        placeholder="email@example.com">
+
+    </div>
+
+    <div class="auth-field">
+
+      <label>
+        Password *
+      </label>
+
+      <input
+        type="password"
+        id="signupPassword"
+        placeholder="••••••••">
+
+    </div>
+
+    <button
+      class="btn-auth-submit"
+      onclick="submitSignUp()">
+
+      Register
+
+    </button>
+
+    <div class="auth-links">
+
+      <a
+        href="javascript:void(0)"
+        onclick="switchForm('signin')">
+
+        Đã có tài khoản? Đăng nhập
+
+      </a>
+
+    </div>
+
+  </div>
+
+  <div
+    class="auth-card"
+    id="formLost"
+    style="display: none;">
+
+    <button
+      class="auth-close-btn"
+      onclick="closeAuthModal()">
+
+      ✕
+
+    </button>
+
+    <div class="auth-title">
+
+      RESET PASSWORD
+
+    </div>
+
+    <div class="auth-field">
+
+      <label>
+        Email Address *
+      </label>
+
+      <input
+        type="email"
+        id="lostEmail"
+        placeholder="Nhập Email để lấy lại mật khẩu">
+
+    </div>
+
+    <button
+      class="btn-auth-submit"
+      onclick="submitResetPassword()">
+
+      Send Reset Link
+
+    </button>
+
+    <div class="auth-links">
+
+      <a
+        href="javascript:void(0)"
+        onclick="switchForm('signin')">
+
+        Quay lại Đăng nhập
+
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script type="text/javascript">
+
+document.addEventListener(
+  'contextmenu',
+  function(e) {
+
+    e.preventDefault();
+
+    alert(
+      "Hành động bị cấm để bảo vệ bản quyền!"
+    );
+
+  }
+);
+
+document.addEventListener(
+  'keydown',
+  function(e) {
+
+    if (
+      e.keyCode === 123 ||
+      (
+        e.ctrlKey &&
+        e.shiftKey &&
+        e.keyCode === 73
+      ) ||
+      (
+        e.ctrlKey &&
+        e.shiftKey &&
+        e.keyCode === 74
+      ) ||
+      (
+        e.ctrlKey &&
+        e.shiftKey &&
+        e.keyCode === 67
+      ) ||
+      (
+        e.ctrlKey &&
+        e.keyCode === 85
+      ) ||
+      (
+        e.ctrlKey &&
+        e.keyCode === 83
+      )
+    ) {
+
+      e.preventDefault();
+
+      return false;
+
+    }
+
+  }
+);
+
+document.addEventListener(
+  'dragstart',
+  function(e) {
+
+    if (
+      e.target.tagName === 'IMG'
+    ) {
+
+      e.preventDefault();
+
+    }
+
+  }
+);
+
+</script>
+
+<script type="text/javascript">
+
+/* =====================================================
+   SUPABASE
+===================================================== */
+
+const SUPABASE_URL =
+  'https://ngfodgexhzghgrczaejl.supabase.co';
+
+const SUPABASE_KEY =
+  'sb_publishable_czWnJAV3rA8_TSllTSU15A_sgTkaAV7';
+
+const supabaseClient =
+  supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+/* =====================================================
+   BIẾN DỮ LIỆU
+===================================================== */
+
+let allTruyen = [];
+
+let allChapters = [];
+
+let latestChapterByTruyen =
+  new Map();
+
+let truyenDoNhomDichLam = [];
+
+let topTruyen = [];
+
+/* =====================================================
+   MOBILE NAV
+===================================================== */
+
+function openNav() {
+
+  document.getElementById(
+    "mySidenav"
+  ).style.width = "260px";
+
+}
+
+function closeNav() {
+
+  document.getElementById(
+    "mySidenav"
+  ).style.width = "0";
+
+}
+
+/* =====================================================
+   GENRE
+===================================================== */
+
+function toggleGenre() {
+
+  document
+    .getElementById(
+      "genreDropdown"
+    )
+    .classList.toggle("open");
+
+}
+
+/* =====================================================
+   THEME
+===================================================== */
+
+function toggleTheme() {
+
+  const body =
+    document.body;
+
+  const themeBtn =
+    document.getElementById(
+      "themeToggle"
+    );
+
+  body.classList.toggle(
+    "light-mode"
+  );
+
+  themeBtn.textContent =
+    body.classList.contains(
+      "light-mode"
+    )
+      ? "☀️"
+      : "🌙";
+
+}
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(value) {
+
+  return String(value ?? '')
+    .replace(
+      /&/g,
+      '&amp;'
+    )
+    .replace(
+      /</g,
+      '&lt;'
+    )
+    .replace(
+      />/g,
+      '&gt;'
+    )
+    .replace(
+      /"/g,
+      '&quot;'
+    )
+    .replace(
+      /'/g,
+      '&#039;'
+    );
+
+}
+
+/* =====================================================
+   FORMAT NGÀY
+===================================================== */
+
+function formatDate(value) {
+
+  if (!value) {
+
+    return 'Mới cập nhật';
+
+  }
+
+  const date =
+    new Date(value);
+
+  if (
+    Number.isNaN(
+      date.getTime()
+    )
+  ) {
+
+    return 'Mới cập nhật';
+
+  }
+
+  return date.toLocaleDateString(
+    'vi-VN',
+    {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    }
+  );
+
+}
+
+/* =====================================================
+   LẤY CHAPTER MỚI NHẤT
+===================================================== */
+
+function getLatestChapter(
+  truyenId
+) {
+
+  return (
+    latestChapterByTruyen.get(
+      String(truyenId)
+    ) || null
+  );
+
+}
+
+/* =====================================================
+   LINK ĐỌC CHAPTER
+   QUAN TRỌNG:
+   KHÔNG DÙNG chapter.link_html
+
+   Chapter có id:
+   doctruyen.html?chap_id=ID
+
+   Ví dụ:
+   id = 36
+   =>
+   doctruyen.html?chap_id=36
+===================================================== */
+
+function getChapterHref(
+  chapter,
+  truyenId
+) {
+
+  if (
+    chapter &&
+    chapter.id !== null &&
+    chapter.id !== undefined &&
+    String(chapter.id).trim() !== ''
+  ) {
+
+    return (
+      'doctruyen.html?chap_id=' +
+      encodeURIComponent(
+        chapter.id
+      )
+    );
+
+  }
+
+  return (
+    'chitiet.html?id=' +
+    encodeURIComponent(
+      truyenId
+    )
+  );
+
+}
+
+/* =====================================================
+   POPULAR SLIDER
+===================================================== */
+
+const sliderContainer =
+  document.getElementById(
+    'popularSlider'
+  );
+
+let isMoving = false;
+
+function scrollPopular(
+  direction
+) {
+
+  if (isMoving) return;
+
+  isMoving = true;
+
+  const cards =
+    sliderContainer.querySelectorAll(
+      '.popular-card'
+    );
+
+  if (!cards.length) {
+
+    isMoving = false;
+
+    return;
+
+  }
+
+  const cardWidth =
+    cards[0].offsetWidth + 12;
+
+  if (direction === 1) {
+
+    sliderContainer.style.transition =
+      'transform 0.3s ease-in-out';
+
+    sliderContainer.style.transform =
+      `translateX(-${cardWidth}px)`;
+
+    setTimeout(
+      () => {
+
+        sliderContainer.style.transition =
+          'none';
+
+        sliderContainer.appendChild(
+          sliderContainer.firstElementChild
+        );
+
+        sliderContainer.style.transform =
+          'translateX(0)';
+
+        isMoving = false;
+
+      },
+      300
+    );
+
+  } else {
+
+    sliderContainer.style.transition =
+      'none';
+
+    sliderContainer.insertBefore(
+      sliderContainer.lastElementChild,
+      sliderContainer.firstElementChild
+    );
+
+    sliderContainer.style.transform =
+      `translateX(-${cardWidth}px)`;
+
+    setTimeout(
+      () => {
+
+        sliderContainer.style.transition =
+          'transform 0.3s ease-in-out';
+
+        sliderContainer.style.transform =
+          'translateX(0)';
+
+      },
+      10
+    );
+
+    setTimeout(
+      () => {
+
+        isMoving = false;
+
+      },
+      310
+    );
+
+  }
+
+}
+
+/* =====================================================
+   LOAD TRUYỆN DO NHÓM DỊCH LÀM
+===================================================== */
+
+async function loadTruyenDoNhomDichLam() {
+
+  const {
+    data: nhomDichRows,
+    error: nhomDichError
+  } =
+    await supabaseClient
+      .from('truyen_do_nhom_dich_lam')
+      .select('id');
+
+  if (nhomDichError) {
+
+    console.error(
+      'LỖI truyen_do_nhom_dich_lam:',
+      nhomDichError
+    );
+
+    truyenDoNhomDichLam = [];
+
+    throw nhomDichError;
+
+  }
+
+  const nhomDichIds =
+    [
+      ...new Set(
+        (nhomDichRows || [])
+          .map(
+            row =>
+              Number(row.id)
+          )
+          .filter(
+            id =>
+              Number.isFinite(id)
+          )
+      )
+    ];
+
+  if (
+    nhomDichIds.length === 0
+  ) {
+
+    truyenDoNhomDichLam = [];
+
+    console.log(
+      'truyen_do_nhom_dich_lam chưa có ID.'
+    );
+
+    return;
+
+  }
+
+  const {
+    data: matchedTruyen,
+    error: matchedError
+  } =
+    await supabaseClient
+      .from('Truyện')
+      .select('*')
+      .in(
+        'id',
+        nhomDichIds
+      );
+
+  if (matchedError) {
+
+    console.error(
+      'LỖI lấy Truyện nhóm dịch:',
+      matchedError
+    );
+
+    truyenDoNhomDichLam = [];
+
+    throw matchedError;
+
+  }
+
+  const truyenMap =
+    new Map(
+      (matchedTruyen || [])
+        .map(
+          truyen => [
+            String(truyen.id),
+            truyen
+          ]
+        )
+    );
+
+  truyenDoNhomDichLam =
+    nhomDichIds
+      .map(
+        id =>
+          truyenMap.get(
+            String(id)
+          )
+      )
+      .filter(
+        Boolean
+      );
+
+  console.log(
+    'ID TRUYỆN DO NHÓM DỊCH:',
+    nhomDichIds
+  );
+
+  console.log(
+    'TRUYỆN DO NHÓM DỊCH SAU KHI ĐỐI CHIẾU:',
+    truyenDoNhomDichLam
+  );
+
+}
+
+/* =====================================================
+   LOAD TRUYỆN
+===================================================== */
+
+async function loadTruyenFromSupabase() {
+
+  try {
+
+    const {
+      data: truyenList,
+      error: truyenError
+    } =
+      await supabaseClient
+        .from('Truyện')
+        .select('*');
+
+    if (truyenError) {
+
+      throw truyenError;
+
+    }
+
+    allTruyen =
+      truyenList || [];
+
+    const {
+      data: chapterList,
+      error: chapterError
+    } =
+      await supabaseClient
+        .from('Chapters')
+        .select('*')
+        .order(
+          'id',
+          {
+            ascending: false
+          }
+        );
+
+    if (chapterError) {
+
+      throw chapterError;
+
+    }
+
+    allChapters =
+      chapterList || [];
+
+    latestChapterByTruyen =
+      new Map();
+
+    for (
+      const chapter
+      of allChapters
+    ) {
+
+      const key =
+        String(
+          chapter.truyen_id
+        );
+
+      if (
+        !latestChapterByTruyen.has(
+          key
+        )
+      ) {
+
+        latestChapterByTruyen.set(
+          key,
+          chapter
+        );
+
+      }
+
+    }
+
+    allTruyen.sort(
+      (a, b) => {
+
+        const chapA =
+          getLatestChapter(
+            a.id
+          );
+
+        const chapB =
+          getLatestChapter(
+            b.id
+          );
+
+        const chapterIdA =
+          chapA
+            ? Number(chapA.id)
+            : 0;
+
+        const chapterIdB =
+          chapB
+            ? Number(chapB.id)
+            : 0;
+
+        if (
+          chapterIdA !==
+          chapterIdB
+        ) {
+
+          return (
+            chapterIdB -
+            chapterIdA
+          );
+
+        }
+
+        return (
+          Number(b.id) -
+          Number(a.id)
+        );
+
+      }
+    );
+
+    await loadTruyenDoNhomDichLam();
+
+    const {
+      data: topRows,
+      error: topError
+    } =
+      await supabaseClient
+        .from('Top_truyen')
+        .select('id');
+
+    if (topError) {
+
+      throw topError;
+
+    }
+
+    const topIds =
+      [
+        ...new Set(
+          (topRows || [])
+            .map(
+              row =>
+                Number(row.id)
+            )
+            .filter(
+              id =>
+                Number.isFinite(id)
+            )
+        )
+      ];
+
+    const truyenMap =
+      new Map();
+
+    allTruyen.forEach(
+      truyen => {
+
+        truyenMap.set(
+          String(truyen.id),
+          truyen
+        );
+
+      }
+    );
+
+    topTruyen =
+      topIds
+        .map(
+          id =>
+            truyenMap.get(
+              String(id)
+            )
+        )
+        .filter(
+          Boolean
+        );
+
+    renderPopular();
+
+    renderLatest();
+
+    renderTopDay();
+
+  } catch (err) {
+
+    console.error(
+      "Lỗi lấy dữ liệu từ Supabase:",
+      err
+    );
+
+    document.getElementById(
+      'latestGrid'
+    ).innerHTML = `
+      <p
+        style="
+          grid-column:1/-1;
+          color:var(--text-sub);
+        "
+      >
+        Không thể tải dữ liệu.
+      </p>
+    `;
+
+    document.getElementById(
+      'popularSlider'
+    ).innerHTML = '';
+
+    document.getElementById(
+      'topDayContainer'
+    ).innerHTML = `
+      <p style="color:var(--text-sub);">
+        Không thể tải Top truyện.
+      </p>
+    `;
+
+  }
+
+}
+
+/* =====================================================
+   TRUYỆN DO NHÓM DỊCH LÀM
+===================================================== */
+
+function renderPopular() {
+
+  const popularSlider =
+    document.getElementById(
+      'popularSlider'
+    );
+
+  popularSlider.innerHTML =
+    '';
+
+  if (
+    !truyenDoNhomDichLam.length
+  ) {
+
+    popularSlider.innerHTML = `
+
+      <div
+        style="
+          color:var(--text-sub);
+          font-size:11px;
+          padding:8px;
+        "
+      >
+
+        Chưa có truyện do nhóm dịch làm.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+  truyenDoNhomDichLam.forEach(
+    item => {
+
+      const chapter =
+        getLatestChapter(
+          item.id
+        );
+
+      const chapterName =
+        chapter?.ten_chap ||
+        'Đọc truyện';
+
+      const updateDate =
+        chapter?.created_at
+          ? formatDate(
+              chapter.created_at
+            )
+          : 'Mới cập nhật';
+
+      const chapterHref =
+        getChapterHref(
+          chapter,
+          item.id
+        );
+
+      const popularHTML = `
+
+        <div class="popular-card">
+
+          <div class="popular-cover">
+
+            <span class="badge-new">
+              NEW
+            </span>
+
+            <a
+              href="chitiet.html?id=${encodeURIComponent(item.id)}">
+
+              <img
+                src="${escapeHTML(
+                  item.anh_bia ||
+                  'https://picsum.photos/140/190'
+                )}"
+                alt="${escapeHTML(
+                  item.ten_truyen
+                )}">
+
+            </a>
+
+          </div>
+
+          <div class="popular-info">
+
+            <h3 class="popular-title">
+
+              <a
+                href="chitiet.html?id=${encodeURIComponent(item.id)}">
+
+                ${escapeHTML(
+                  item.ten_truyen
+                )}
+
+              </a>
+
+            </h3>
+
+            <div class="popular-date">
+
+              ${escapeHTML(
+                updateDate
+              )}
+
+            </div>
+
+            <div class="popular-chapters">
+
+              <a
+                href="${escapeHTML(
+                  chapterHref
+                )}"
+                class="chip-chap">
+
+                ${escapeHTML(
+                  chapterName
+                )}
+
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+      popularSlider.innerHTML +=
+        popularHTML;
+
+    }
+  );
+
+}
+
+/* =====================================================
+   LATEST MANGA
+===================================================== */
+
+function renderLatest() {
+
+  const latestGrid =
+    document.getElementById(
+      'latestGrid'
+    );
+
+  latestGrid.innerHTML =
+    '';
+
+  if (
+    !allTruyen.length
+  ) {
+
+    latestGrid.innerHTML = `
+
+      <p
+        style="
+          grid-column:1/-1;
+          color:var(--text-sub);
+        "
+      >
+
+        Chưa có truyện nào trong cơ sở dữ liệu.
+
+      </p>
+
+    `;
+
+    return;
+
+  }
+
+  allTruyen.forEach(
+    item => {
+
+      const chapter =
+        getLatestChapter(
+          item.id
+        );
+
+      const chapterName =
+        chapter?.ten_chap ||
+        'Đọc ngay';
+
+      const chapterHref =
+        getChapterHref(
+          chapter,
+          item.id
+        );
+
+      const gridHTML = `
+
+        <div class="manga-card">
+
+          <div class="manga-img-box">
+
+            <span class="badge-hot-red">
+              HOT
+            </span>
+
+            <a
+              href="chitiet.html?id=${encodeURIComponent(item.id)}">
+
+              <img
+                src="${escapeHTML(
+                  item.anh_bia ||
+                  'https://picsum.photos/190/250'
+                )}"
+                alt="${escapeHTML(
+                  item.ten_truyen
+                )}">
+
+            </a>
+
+          </div>
+
+          <a
+            href="chitiet.html?id=${encodeURIComponent(item.id)}"
+            class="manga-title">
+
+            ${escapeHTML(
+              item.ten_truyen
+            )}
+
+          </a>
+
+          <div class="rating-stars">
+            ★★★★★
+          </div>
+
+          <div class="chap-list-item">
+
+            <a
+              href="${escapeHTML(
+                chapterHref
+              )}">
+
+              ${escapeHTML(
+                chapterName
+              )}
+
+            </a>
+
+            ${
+              chapter
+              ? `
+
+                <span class="tag-new-small">
+                  MỚI
+                </span>
+
+              `
+              : ''
+            }
+
+          </div>
+
+        </div>
+
+      `;
+
+      latestGrid.innerHTML +=
+        gridHTML;
+
+    }
+  );
+
+}
+
+/* =====================================================
+   TOP DAY
+===================================================== */
+
+function renderTopDay() {
+
+  const topDayContainer =
+    document.getElementById(
+      'topDayContainer'
+    );
+
+  topDayContainer.innerHTML =
+    '';
+
+  if (
+    !topTruyen.length
+  ) {
+
+    topDayContainer.innerHTML = `
+
+      <div
+        style="
+          color:var(--text-sub);
+          font-size:11px;
+          padding:8px 0;
+        "
+      >
+
+        Chưa có truyện trong Top.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+  topTruyen.forEach(
+    item => {
+
+      const chapter =
+        getLatestChapter(
+          item.id
+        );
+
+      const chapterName =
+        chapter?.ten_chap ||
+        'Đọc ngay';
+
+      const chapterHref =
+        getChapterHref(
+          chapter,
+          item.id
+        );
+
+      const topHTML = `
+
+        <div class="top-item">
+
+          <img
+            src="${escapeHTML(
+              item.anh_bia ||
+              'https://picsum.photos/80/100'
+            )}"
+            alt="${escapeHTML(
+              item.ten_truyen
+            )}">
+
+          <div class="top-item-info">
+
+            <a
+              href="chitiet.html?id=${encodeURIComponent(item.id)}"
+              class="top-item-title">
+
+              ${escapeHTML(
+                item.ten_truyen
+              )}
+
+            </a>
+
+            <div
+              style="margin-top:4px;">
+
+              <a
+                href="${escapeHTML(
+                  chapterHref
+                )}"
+                class="top-chap-link">
+
+                ${escapeHTML(
+                  chapterName
+                )}
+
+              </a>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+      topDayContainer.innerHTML +=
+        topHTML;
+
+    }
+  );
+
+}
+
+/* =====================================================
+   SEARCH
+===================================================== */
+
+const searchToggleBtn =
+  document.getElementById(
+    'searchToggleBtn'
+  );
+
+const searchBarWrapper =
+  document.getElementById(
+    'searchBarWrapper'
+  );
+
+const searchInput =
+  document.getElementById(
+    'searchInput'
+  );
+
+const searchSubmitBtn =
+  document.getElementById(
+    'searchSubmitBtn'
+  );
+
+const dropdown =
+  document.getElementById(
+    'searchResultsDropdown'
+  );
+
+searchToggleBtn.addEventListener(
+  'click',
+  () => {
+
+    searchBarWrapper.classList.toggle(
+      'hidden'
+    );
+
+    if (
+      !searchBarWrapper.classList.contains(
+        'hidden'
+      )
+    ) {
+
+      searchInput.focus();
+
+    }
+
+  }
+);
+
+let searchTimeout = null;
+
+searchInput.addEventListener(
+  'input',
+  (e) => {
+
+    const keyword =
+      e.target.value.trim();
+
+    clearTimeout(
+      searchTimeout
+    );
+
+    if (
+      keyword.length === 0
+    ) {
+
+      dropdown.innerHTML =
+        '';
+
+      dropdown.classList.add(
+        'hidden'
+      );
+
+      return;
+
+    }
+
+    searchTimeout =
+      setTimeout(
+        () => {
+
+          searchTruyenSupabase(
+            keyword
+          );
+
+        },
+        300
+      );
+
+  }
+);
+
+async function searchTruyenSupabase(
+  keyword
+) {
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from('Truyện')
+        .select(
+          'id, ten_truyen'
+        )
+        .ilike(
+          'ten_truyen',
+          `%${keyword}%`
+        )
+        .limit(6);
+
+    if (error) {
+
+      throw error;
+
+    }
+
+    renderSearchResults(
+      data,
+      keyword
+    );
+
+  } catch (err) {
+
+    console.error(
+      "Lỗi tìm kiếm Supabase:",
+      err
+    );
+
+  }
+
+}
+
+function renderSearchResults(
+  list,
+  keyword
+) {
+
+  dropdown.innerHTML =
+    '';
+
+  if (
+    !list ||
+    list.length === 0
+  ) {
+
+    dropdown.classList.add(
+      'hidden'
+    );
+
+    return;
+
+  }
+
+  list.forEach(
+    item => {
+
+      const li =
+        document.createElement(
+          'li'
+        );
+
+      const title =
+        String(
+          item.ten_truyen || ''
+        );
+
+      const safeKeyword =
+        keyword.replace(
+          /[.*+?^${}()|[\]\\]/g,
+          '\\$&'
+        );
+
+      const regex =
+        new RegExp(
+          `(${safeKeyword})`,
+          'gi'
+        );
+
+      li.innerHTML =
+        escapeHTML(title)
+          .replace(
+            regex,
+            '<strong>$1</strong>'
+          );
+
+      li.addEventListener(
+        'click',
+        () => {
+
+          window.location.href =
+            `chitiet.html?id=${encodeURIComponent(item.id)}`;
+
+        }
+      );
+
+      dropdown.appendChild(
+        li
+      );
+
+    }
+  );
+
+  dropdown.classList.remove(
+    'hidden'
+  );
+
+}
+
+function goToSearchPage() {
+
+  const keyword =
+    searchInput.value.trim();
+
+  if (keyword) {
+
+    window.location.href =
+      `timkiem.html?q=${encodeURIComponent(keyword)}`;
+
+  }
+
+}
+
+searchSubmitBtn.addEventListener(
+  'click',
+  goToSearchPage
+);
+
+searchInput.addEventListener(
+  'keypress',
+  (e) => {
+
+    if (
+      e.key === 'Enter'
+    ) {
+
+      goToSearchPage();
+
+    }
+
+  }
+);
+
+document.addEventListener(
+  'click',
+  (e) => {
+
+    if (
+      !searchBarWrapper.contains(
+        e.target
+      ) &&
+      e.target !== searchToggleBtn
+    ) {
+
+      dropdown.classList.add(
+        'hidden'
+      );
+
+    }
+
+  }
+);
+
+/* =====================================================
+   AUTH MODAL
+===================================================== */
+
+function openAuthModal(
+  type = 'signin'
+) {
+
+  document.getElementById(
+    'authModalOverlay'
+  ).style.display =
+    'flex';
+
+  switchForm(type);
+
+}
+
+function closeAuthModal() {
+
+  document.getElementById(
+    'authModalOverlay'
+  ).style.display =
+    'none';
+
+}
+
+function switchForm(
+  type
+) {
+
+  document.getElementById(
+    'formSignIn'
+  ).style.display =
+    type === 'signin'
+      ? 'block'
+      : 'none';
+
+  document.getElementById(
+    'formSignUp'
+  ).style.display =
+    type === 'signup'
+      ? 'block'
+      : 'none';
+
+  document.getElementById(
+    'formLost'
+  ).style.display =
+    type === 'lost'
+      ? 'block'
+      : 'none';
+
+}
+
+/* =====================================================
+   DOM LOADED
+===================================================== */
+
+window.addEventListener(
+  'DOMContentLoaded',
+  async () => {
+
+    checkUserSession();
+
+    loadTruyenFromSupabase();
+
+  }
+);
+
+/* =====================================================
+   SESSION
+===================================================== */
+
+async function checkUserSession() {
+
+  const {
+    data: {
+      session
+    }
+  } =
+    await supabaseClient.auth
+      .getSession();
+
+  updateAuthUI(
+    session
+      ? session.user
+      : null
+  );
+
+}
+
+/* =====================================================
+   AUTH UI
+===================================================== */
+
+function updateAuthUI(
+  user
+) {
+
+  const guestView =
+    document.getElementById(
+      'nav-guest-view'
+    );
+
+  const userView =
+    document.getElementById(
+      'nav-user-view'
+    );
+
+  const displayName =
+    document.getElementById(
+      'user-display-name'
+    );
+
+  if (user) {
+
+    if (guestView) {
+
+      guestView.style.display =
+        'none';
+
+    }
+
+    if (userView) {
+
+      userView.style.display =
+        'flex';
+
+    }
+
+    if (displayName) {
+
+      displayName.textContent =
+        user.user_metadata?.username ||
+        user.email.split('@')[0];
+
+    }
+
+  } else {
+
+    if (guestView) {
+
+      guestView.style.display =
+        'flex';
+
+    }
+
+    if (userView) {
+
+      userView.style.display =
+        'none';
+
+    }
+
+  }
+
+}
+
+/* =====================================================
+   SIGN IN
+===================================================== */
+
+async function submitSignIn() {
+
+  const email =
+    document
+      .getElementById(
+        'signinEmail'
+      )
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById(
+        'signinPassword'
+      )
+      .value;
+
+  if (
+    !email ||
+    !password
+  ) {
+
+    return alert(
+      'Vui lòng nhập đầy đủ Email và Mật khẩu!'
+    );
+
+  }
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.auth
+      .signInWithPassword({
+        email,
+        password
+      });
+
+  if (error) {
+
+    alert(
+      'Đăng nhập thất bại: ' +
+      error.message
+    );
+
+  } else {
+
+    alert(
+      'Đăng nhập thành công!'
+    );
+
+    closeAuthModal();
+
+    updateAuthUI(
+      data.user
+    );
+
+  }
+
+}
+
+/* =====================================================
+   SIGN UP
+===================================================== */
+
+async function submitSignUp() {
+
+  const username =
+    document
+      .getElementById(
+        'signupUsername'
+      )
+      .value
+      .trim();
+
+  const email =
+    document
+      .getElementById(
+        'signupEmail'
+      )
+      .value
+      .trim();
+
+  const password =
+    document
+      .getElementById(
+        'signupPassword'
+      )
+      .value;
+
+  if (
+    !email ||
+    !password ||
+    !username
+  ) {
+
+    return alert(
+      'Vui lòng điền đầy đủ thông tin!'
+    );
+
+  }
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient.auth
+      .signUp({
+
+        email,
+        password,
+
+        options: {
+
+          data: {
+            username: username
+          }
+
+        }
+
+      });
+
+  if (error) {
+
+    alert(
+      'Đăng ký thất bại: ' +
+      error.message
+    );
+
+  } else {
+
+    alert(
+      'Đăng ký thành công! Vui lòng kiểm tra email để xác nhận tài khoản.'
+    );
+
+    closeAuthModal();
+
+  }
+
+}
+
+/* =====================================================
+   RESET PASSWORD
+===================================================== */
+
+async function submitResetPassword() {
+
+  const email =
+    document
+      .getElementById(
+        'lostEmail'
+      )
+      .value
+      .trim();
+
+  if (!email) {
+
+    return alert(
+      'Vui lòng nhập Email!'
+    );
+
+  }
+
+  const {
+    error
+  } =
+    await supabaseClient.auth
+      .resetPasswordForEmail(
+        email
+      );
+
+  if (error) {
+
+    alert(
+      'Lỗi: ' +
+      error.message
+    );
+
+  } else {
+
+    alert(
+      'Link đặt lại mật khẩu đã được gửi vào Email của bạn!'
+    );
+
+    closeAuthModal();
+
+  }
+
+}
+
+/* =====================================================
+   SIGN OUT
+===================================================== */
+
+async function handleSignOut() {
+
+  await supabaseClient.auth
+    .signOut();
+
+  alert(
+    'Đã đăng xuất!'
+  );
+
+  updateAuthUI(
+    null
+  );
+
+}
+
+</script>
+
+</body>
+</html>
+```
