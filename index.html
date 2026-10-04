@@ -3,14 +3,35 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- GOOGLE SEARCH CONSOLE - XÁC MINH WEBSITE -->
+  <!--
+  DÁN THẺ GOOGLE CẤP CHO BẠN VÀO ĐÂY.
+
+  Ví dụ:
+  <meta name="google-site-verification" content="MÃ_CỦA_BẠN">
+  -->
+
+  <meta name="google-site-verification" content="LBAHGvlxr4lt8aLyuQN21eODnYK-osDrmg0kOoPl6o0">
+
   <title>Genben Manga - Web Đọc Truyện Tranh Online</title>
-  
-  <!-- CHỈ ĐỔI LOGO TRÊN TAB TRÌNH DUYỆT (FAVICON Ở ĐÂY) -->
-  <link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/DichTruyenDrop/Wed/main/logoweb.jpg">
+
+  <!-- FAVICON -->
+  <link
+    rel="icon"
+    type="image/jpeg"
+    href="https://raw.githubusercontent.com/DichTruyenDrop/Wed/main/logoweb.jpg"
+  >
 
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                   Roboto, Helvetica, Arial, sans-serif;
+    }
+
     :root {
       --bg-dark: #0f0e17;
       --bg-card: #181726;
@@ -28,7 +49,10 @@
       padding-bottom: 40px;
     }
 
-    a { color: inherit; text-decoration: none; }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
 
     /* HEADER */
     header {
@@ -69,7 +93,7 @@
       padding: 0 15px;
     }
 
-    /* BANNER CHUYỂN HƯỚNG (REDIRECT BOX) */
+    /* REDIRECT BOX */
     .redirect-box {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -127,7 +151,9 @@
       transition: opacity 0.2s;
     }
 
-    .btn-access:hover { opacity: 0.9; }
+    .btn-access:hover {
+      opacity: 0.9;
+    }
 
     .update-status {
       display: flex;
@@ -154,7 +180,7 @@
       color: var(--text-main);
     }
 
-    /* SLIDER NỔI BẬT */
+    /* SLIDER */
     .section-title {
       font-size: 18px;
       font-weight: 800;
@@ -171,8 +197,14 @@
       margin-bottom: 30px;
     }
 
-    .manga-slider::-webkit-scrollbar { height: 6px; }
-    .manga-slider::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 3px; }
+    .manga-slider::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    .manga-slider::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 3px;
+    }
 
     .slider-item {
       flex: 0 0 140px;
@@ -189,7 +221,7 @@
       display: block;
     }
 
-    /* ĐOẠN VĂN GIỚI THIỆU SEO */
+    /* SEO ARTICLE */
     .article-section {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
@@ -200,9 +232,30 @@
       font-size: 14px;
     }
 
-    .article-section h1 { font-size: 20px; color: var(--text-main); margin-bottom: 10px; }
-    .article-section h2 { font-size: 16px; color: var(--text-main); margin: 20px 0 10px 0; }
-    .article-section p { margin-bottom: 12px; }
+    .article-section h1 {
+      font-size: 20px;
+      color: var(--text-main);
+      margin-bottom: 10px;
+    }
+
+    .article-section h2 {
+      font-size: 16px;
+      color: var(--text-main);
+      margin: 20px 0 10px 0;
+    }
+
+    .article-section p {
+      margin-bottom: 12px;
+    }
+
+    .article-section ul {
+      padding-left: 20px;
+      margin-bottom: 10px;
+    }
+
+    .article-section li {
+      margin-bottom: 5px;
+    }
 
     /* FOOTER */
     footer {
@@ -223,29 +276,60 @@
     }
   </style>
 </head>
+
 <body>
 
-  <!-- HEADER (Dùng ảnh genben-logo.png gốc) -->
+  <!-- HEADER -->
   <header>
     <div class="logo-container">
       <a href="index.html">
-        <img src="Hinh/genben-logo.png" alt="Genben Manga" class="logo-img" onerror="this.src='https://via.placeholder.com/120x35?text=GenbenManga'">
+        <img
+          src="Hinh/genben-logo.png"
+          alt="Genben Manga"
+          class="logo-img"
+          onerror="this.src='https://via.placeholder.com/120x35?text=GenbenManga'"
+        >
       </a>
     </div>
-    <button class="menu-btn">☰</button>
+
+    <button class="menu-btn" aria-label="Menu">
+      ☰
+    </button>
   </header>
 
+
   <div class="container">
-    
-    <!-- KHUNG CHUYỂN HƯỚNG TỚI MAUBIA_2 (Dùng ảnh genben-logo.png gốc) -->
+
+    <!-- KHUNG CHUYỂN HƯỚNG -->
     <div class="redirect-box">
-      <img src="Hinh/genben-logo.png" alt="Genben Manga" class="redirect-logo" onerror="this.src='https://via.placeholder.com/150x40?text=GenbenManga'">
-      <div class="domain-title">Tên miền hiện tại của GenbenManga 📌</div>
-      
+
+      <img
+        src="Hinh/genben-logo.png"
+        alt="Genben Manga"
+        class="redirect-logo"
+        onerror="this.src='https://via.placeholder.com/150x40?text=GenbenManga'"
+      >
+
+      <div class="domain-title">
+        Tên miền hiện tại của GenbenManga 📌
+      </div>
+
       <div class="domain-input-box">
-        <input type="text" value="Genben Manga" readonly id="domainUrl">
-        <!-- Click nút Access sẽ mở thẳng sang file Maubia_2.html -->
-        <a href="https://dichtruyendrop.github.io/Wed/Maubia_2.html" class="btn-access">Access ✔</a>
+
+        <input
+          type="text"
+          value="Genben Manga"
+          readonly
+          id="domainUrl"
+        >
+
+        <a
+          href="https://dichtruyendrop.github.io/Wed/Maubia_2.html"
+          class="btn-access"
+        >
+          Access ✔
+        </a>
+
       </div>
 
       <div class="update-status">
@@ -253,54 +337,149 @@
       </div>
 
       <div class="social-notice">
-        Hãy theo dõi kênh GenbenManga để nhận thông báo về những thay đổi và tính năng mới nhất.
+        Hãy theo dõi kênh GenbenManga để nhận thông báo
+        về những thay đổi và tính năng mới nhất.
       </div>
 
       <div class="social-icons">
-        <span>🌐</span> <span>📸</span> <span>🎵</span>
+        <span>🌐</span>
+        <span>📸</span>
+        <span>🎵</span>
       </div>
+
     </div>
 
-    <!-- MANGA UPDATES SLIDER -->
-    <div class="section-title">Manga Updates!</div>
+
+    <!-- MANGA UPDATES -->
+    <div class="section-title">
+      Manga Updates!
+    </div>
+
     <div class="manga-slider">
+
       <div class="slider-item">
-        <a href="Maubia_2.html"><img src="https://raw.githubusercontent.com/DichTruyenDrop/Destiny-unchanin-online-chap-33.html-/refs/heads/main/2915e13a-d8df-47cd-9652-154137626aca.jpg" alt="Manga 1"></a>
+        <a href="Maubia_2.html">
+          <img
+            src="https://raw.githubusercontent.com/DichTruyenDrop/Destiny-unchanin-online-chap-33.html-/refs/heads/main/2915e13a-d8df-47cd-9652-154137626aca.jpg"
+            alt="Manga 1"
+            loading="lazy"
+            decoding="async"
+          >
+        </a>
       </div>
+
       <div class="slider-item">
-        <a href=""><img src="https://raw.githubusercontent.com/DichTruyenDrop/Gif/refs/heads/main/kiem-thanh-chuyen-sinh-thanh-hau-gai.jpg" alt="Manga 2"></a>
+        <a href="#">
+          <img
+            src="https://raw.githubusercontent.com/DichTruyenDrop/Gif/refs/heads/main/kiem-thanh-chuyen-sinh-thanh-hau-gai.jpg"
+            alt="Manga 2"
+            loading="lazy"
+            decoding="async"
+          >
+        </a>
       </div>
+
       <div class="slider-item">
-        <a href=""><img src="https://dichtruyendrop.github.io/After-Transformation-Mine-And-Her-Wild-Fantasy/cover.jpeg" alt="Manga 3"></a>
+        <a href="#">
+          <img
+            src="https://dichtruyendrop.github.io/After-Transformation-Mine-And-Her-Wild-Fantasy/cover.jpeg"
+            alt="Manga 3"
+            loading="lazy"
+            decoding="async"
+          >
+        </a>
       </div>
+
       <div class="slider-item">
-        <a href=""><img src="https://raw.githubusercontent.com/DichTruyenDrop/Gif/refs/heads/main/magical-change.jpg" alt="Manga 4"></a>
+        <a href="#">
+          <img
+            src="https://raw.githubusercontent.com/DichTruyenDrop/Gif/refs/heads/main/magical-change.jpg"
+            alt="Manga 4"
+            loading="lazy"
+            decoding="async"
+          >
+        </a>
       </div>
+
     </div>
 
-    <!-- NỘI DUNG GIỚI THIỆU (SEO) -->
+
+    <!-- SEO -->
     <div class="article-section">
-      <h1>Genben Manga – Đọc Manga, Manhwa và Manhua trực tuyến</h1>
-      <p><strong>GenbenManga</strong> là một trang web đọc truyện tranh trực tuyến được tạo ra dành cho những độc giả thích khám phá manga, manhwa, manhua và truyện tranh trực tuyến ở một nơi tiện lợi.</p>
 
-      <h2>Khám phá Manga, Manhwa, Manhua trên Genben Manga</h2>
-      <p>GenbenManga kết hợp nhiều phong cách truyện tranh khác nhau để độc giả có thể khám phá những câu chuyện từ nhiều truyền thống kể chuyện khác nhau.</p>
+      <h1>
+        Genben Manga – Đọc Manga, Manhwa và Manhua trực tuyến
+      </h1>
+
+      <p>
+        <strong>GenbenManga</strong> là một trang web đọc truyện tranh
+        trực tuyến được tạo ra dành cho những độc giả thích khám phá
+        manga, manhwa, manhua và truyện tranh trực tuyến ở một nơi tiện lợi.
+      </p>
+
+      <h2>
+        Khám phá Manga, Manhwa, Manhua trên Genben Manga
+      </h2>
+
+      <p>
+        GenbenManga kết hợp nhiều phong cách truyện tranh khác nhau
+        để độc giả có thể khám phá những câu chuyện từ nhiều truyền thống
+        kể chuyện khác nhau.
+      </p>
+
       <ul>
-        <li><strong>Manga:</strong> Truyện tranh theo phong cách Nhật Bản với nhiều thể loại khác nhau.</li>
-        <li><strong>Manhwa:</strong> Truyện tranh Hàn Quốc nổi tiếng với bố cục webtoon đầy màu sắc.</li>
-        <li><strong>Manhua:</strong> Truyện tranh Trung Quốc với chủ đề võ thuật và giả tưởng phong phú.</li>
+        <li>
+          <strong>Manga:</strong>
+          Truyện tranh theo phong cách Nhật Bản với nhiều thể loại khác nhau.
+        </li>
+
+        <li>
+          <strong>Manhwa:</strong>
+          Truyện tranh Hàn Quốc nổi tiếng với bố cục webtoon đầy màu sắc.
+        </li>
+
+        <li>
+          <strong>Manhua:</strong>
+          Truyện tranh Trung Quốc với chủ đề võ thuật và giả tưởng phong phú.
+        </li>
       </ul>
+
     </div>
+
 
     <!-- FOOTER -->
     <footer>
+
       <div class="footer-links">
-        <a href="#">TRANG CHỦ</a> | 
-        <a href="#">VỀ CHÚNG TÔI</a> | 
-        <a href="#">CHÍNH SÁCH BẢO MẬT</a> | 
-        <a href="https://www.facebook.com/profile.php?id=61594908122253">LIÊN HỆ VỚI CHÚNG TÔI</a>
+
+        <a href="#">
+          TRANG CHỦ
+        </a>
+
+        |
+
+        <a href="#">
+          VỀ CHÚNG TÔI
+        </a>
+
+        |
+
+        <a href="#">
+          CHÍNH SÁCH BẢO MẬT
+        </a>
+
+        |
+
+        <a href="https://www.facebook.com/profile.php?id=61594908122253">
+          LIÊN HỆ VỚI CHÚNG TÔI
+        </a>
+
       </div>
-      <div>© 2026 GenbenManga Inc. Bảo lưu mọi quyền.</div>
+
+      <div>
+        © 2026 GenbenManga Inc. Bảo lưu mọi quyền.
+      </div>
+
     </footer>
 
   </div>
