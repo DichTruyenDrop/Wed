@@ -1342,7 +1342,7 @@ a {
       id="latestGrid">
     </div>
 
-    <button class="load-more-btn">
+    <button class="load-more-btn" id="loadMoreBtn">
       TẢI THÊM...
     </button>
 
@@ -1736,12 +1736,25 @@ let allTruyen = [];
 
 let allChapters = [];
 
-let latestChapterByTruyen =
-  new Map();
+/*
+   highestChapterByTruyen:
+   chapter CÓ SỐ LỚN NHẤT để HIỂN THỊ trên card.
 
+   latestPostByTruyen:
+   chapter được ĐĂNG MỚI NHẤT để SẮP XẾP Latest Manga Updates.
+
+   Hai dữ liệu này hoàn toàn tách biệt.
+*/
+let highestChapterByTruyen = new Map();
+let latestPostByTruyen = new Map();
+
+/* Riêng cho mục "TRUYỆN DO NHÓM DỊCH LÀM" */
 let truyenDoNhomDichLam = [];
 
 let topTruyen = [];
+
+let currentDisplayCount = 12;
+const LOAD_MORE_COUNT = 12;
 
 /* =====================================================
    MOBILE NAV
@@ -1871,18 +1884,134 @@ function formatDate(value) {
 }
 
 /* =====================================================
-   LẤY CHAPTER MỚI NHẤT
+   CHAPTER CAO NHẤT - DÙNG ĐỂ HIỂN THỊ
 ===================================================== */
 
-function getLatestChapter(
-  truyenId
-) {
+function getHighestChapter(truyenId) {
 
   return (
-    latestChapterByTruyen.get(
+    highestChapterByTruyen.get(
       String(truyenId)
     ) || null
   );
+
+}
+
+/* =====================================================
+   CHAPTER ĐƯỢC ĐĂNG MỚI NHẤT - DÙNG ĐỂ SẮP XẾP
+===================================================== */
+
+function getLatestPostChapter(truyenId) {
+
+  return (
+    latestPostByTruyen.get(
+      String(truyenId)
+    ) || null
+  );
+
+}
+
+/* =====================================================
+   LẤY SỐ CHAPTER
+   Ví dụ: "Chapter 100" -> 100
+===================================================== */
+
+function getChapterNumber(chapter) {
+
+  if (!chapter) return -Infinity;
+
+  const raw =
+    chapter.ten_chap ??
+    chapter.chapter ??
+    chapter.so_chap ??
+    chapter.chapter_number ??
+    chapter.number ??
+    chapter.chap ??
+    '';
+
+  if (typeof raw === 'number') {
+    return Number.isFinite(raw) ? raw : -Infinity;
+  }
+
+  const match =
+    String(raw)
+      .replace(',', '.')
+      .match(/(\d+(?:\.\d+)?)/);
+
+  return match ? Number(match[1]) : -Infinity;
+
+}
+
+/* =====================================================
+   THỜI ĐIỂM CHAPTER ĐƯỢC ĐĂNG
+   Ưu tiên created_at để không bị updated_at làm sai thứ tự.
+   Nếu không có ngày thì dùng id làm dự phòng.
+===================================================== */
+
+function getChapterPostValue(chapter) {
+
+  if (!chapter) return 0;
+
+  const rawDate =
+    chapter.created_at ??
+    chapter.ngay_tao ??
+    chapter.published_at ??
+    chapter.createdAt ??
+    chapter.date ??
+    null;
+
+  if (rawDate) {
+
+    const time =
+      new Date(rawDate).getTime();
+
+    if (Number.isFinite(time)) {
+      return time;
+    }
+
+  }
+
+  const id = Number(chapter.id);
+
+  return Number.isFinite(id) ? id : 0;
+
+}
+
+/* =====================================================
+   CHỌN CHAPTER CAO NHẤT
+===================================================== */
+
+function isHigherChapter(candidate, current) {
+
+  if (!current) return true;
+
+  const a = getChapterNumber(candidate);
+  const b = getChapterNumber(current);
+
+  if (a !== b) {
+    return a > b;
+  }
+
+  return Number(candidate.id) > Number(current.id);
+
+}
+
+/* =====================================================
+   CHỌN CHAPTER ĐƯỢC ĐĂNG MỚI NHẤT
+===================================================== */
+
+function isNewerPost(candidate, current) {
+
+  if (!current) return true;
+
+  const a = getChapterPostValue(candidate);
+  const b = getChapterPostValue(current);
+
+  if (a !== b) {
+    return a > b;
+  }
+
+  return Number(candidate.id) > Number(current.id);
 
 }
 
@@ -2195,76 +2324,63 @@ async function loadTruyenFromSupabase() {
     allChapters =
       chapterList || [];
 
-    latestChapterByTruyen =
-      new Map();
+    /* =====================================================
+       TÁCH 2 LOẠI CHAPTER
 
-    for (
-      const chapter
-      of allChapters
-    ) {
+       1. highestChapterByTruyen = số chapter lớn nhất
+          -> chỉ dùng để HIỂN THỊ trên card.
 
-      const key =
-        String(
-          chapter.truyen_id
-        );
+       2. latestPostByTruyen = chapter được đăng mới nhất
+          -> chỉ dùng để SẮP XẾP Latest Manga Updates.
 
-      if (
-        !latestChapterByTruyen.has(
-          key
-        )
-      ) {
+       Ví dụ: có 100, 99, 98 rồi đăng mới 44:
+       - Latest Post = 44 -> truyện lên đầu Latest.
+       - Highest Chapter = 100 -> card vẫn hiện 100.
+    ===================================================== */
 
-        latestChapterByTruyen.set(
-          key,
-          chapter
-        );
+    highestChapterByTruyen = new Map();
+    latestPostByTruyen = new Map();
 
+    for (const chapter of allChapters) {
+
+      const key = String(chapter.truyen_id);
+
+      const currentHighest =
+        highestChapterByTruyen.get(key);
+
+      if (isHigherChapter(chapter, currentHighest)) {
+        highestChapterByTruyen.set(key, chapter);
+      }
+
+      const currentLatestPost =
+        latestPostByTruyen.get(key);
+
+      if (isNewerPost(chapter, currentLatestPost)) {
+        latestPostByTruyen.set(key, chapter);
       }
 
     }
 
-    allTruyen.sort(
-      (a, b) => {
+    /*
+       SẮP XẾP LATEST THEO CHAPTER ĐƯỢC ĐĂNG MỚI NHẤT.
+       KHÔNG dùng số chapter ở đây.
+       KHÔNG dùng mục "truyen_do_nhom_dich_lam" ở đây.
+    */
+    allTruyen.sort((a, b) => {
 
-        const chapA =
-          getLatestChapter(
-            a.id
-          );
+      const postA = getLatestPostChapter(a.id);
+      const postB = getLatestPostChapter(b.id);
 
-        const chapB =
-          getLatestChapter(
-            b.id
-          );
+      const timeA = getChapterPostValue(postA);
+      const timeB = getChapterPostValue(postB);
 
-        const chapterIdA =
-          chapA
-            ? Number(chapA.id)
-            : 0;
-
-        const chapterIdB =
-          chapB
-            ? Number(chapB.id)
-            : 0;
-
-        if (
-          chapterIdA !==
-          chapterIdB
-        ) {
-
-          return (
-            chapterIdB -
-            chapterIdA
-          );
-
-        }
-
-        return (
-          Number(b.id) -
-          Number(a.id)
-        );
-
+      if (timeA !== timeB) {
+        return timeB - timeA;
       }
-    );
+
+      return Number(b.id) - Number(a.id);
+
+    });
 
     await loadTruyenDoNhomDichLam();
 
@@ -2325,7 +2441,7 @@ async function loadTruyenFromSupabase() {
 
     renderPopular();
 
-    renderLatest();
+    renderLatest(true);
 
     renderTopDay();
 
@@ -2406,8 +2522,19 @@ function renderPopular() {
   truyenDoNhomDichLam.forEach(
     item => {
 
+      /*
+         MỤC NÀY HOÀN TOÀN RIÊNG.
+         Chỉ lấy các truyện có ID trong bảng
+         truyen_do_nhom_dich_lam.
+         Nó không quyết định thứ tự của Latest Manga Updates.
+      */
       const chapter =
-        getLatestChapter(
+        getHighestChapter(
+          item.id
+        );
+
+      const latestPost =
+        getLatestPostChapter(
           item.id
         );
 
@@ -2416,9 +2543,9 @@ function renderPopular() {
         'Đọc truyện';
 
       const updateDate =
-        chapter?.created_at
+        latestPost
           ? formatDate(
-              chapter.created_at
+              latestPost.created_at
             )
           : 'Mới cập nhật';
 
@@ -2512,134 +2639,135 @@ function renderPopular() {
    LATEST MANGA
 ===================================================== */
 
-function renderLatest() {
+function renderLatest(reset = false) {
 
   const latestGrid =
-    document.getElementById(
-      'latestGrid'
-    );
+    document.getElementById('latestGrid');
 
-  latestGrid.innerHTML =
-    '';
+  const loadMoreBtn =
+    document.getElementById('loadMoreBtn');
 
-  if (
-    !allTruyen.length
-  ) {
-
-    latestGrid.innerHTML = `
-
-      <p
-        style="
-          grid-column:1/-1;
-          color:var(--text-sub);
-        "
-      >
-
-        Chưa có truyện nào trong cơ sở dữ liệu.
-
-      </p>
-
-    `;
-
-    return;
-
+  if (reset) {
+    latestGrid.innerHTML = '';
+    currentDisplayCount = 0;
   }
 
-  allTruyen.forEach(
-    item => {
+  if (!allTruyen.length) {
 
-      const chapter =
-        getLatestChapter(
-          item.id
-        );
+    latestGrid.innerHTML = `
+      <p style="grid-column:1/-1;color:var(--text-sub);">
+        Chưa có truyện nào trong cơ sở dữ liệu.
+      </p>
+    `;
 
-      const chapterName =
-        chapter?.ten_chap ||
-        'Đọc ngay';
+    if (loadMoreBtn) {
+      loadMoreBtn.style.display = 'none';
+    }
 
-      const chapterHref =
-        getChapterHref(
-          chapter,
-          item.id
-        );
+    return;
+  }
 
-      const gridHTML = `
+  const nextItems =
+    allTruyen.slice(
+      currentDisplayCount,
+      currentDisplayCount + LOAD_MORE_COUNT
+    );
 
-        <div class="manga-card">
+  nextItems.forEach(item => {
 
-          <div class="manga-img-box">
+    /*
+       QUAN TRỌNG:
+       card luôn hiển thị CHAPTER CAO NHẤT,
+       không phải chapter vừa được đăng.
+    */
+    const chapter =
+      getHighestChapter(item.id);
 
-            <span class="badge-hot-red">
-              HOT
-            </span>
+    const chapterName =
+      chapter?.ten_chap ||
+      'Đọc ngay';
 
-            <a
-              href="chitiet.html?id=${encodeURIComponent(item.id)}">
+    const chapterHref =
+      getChapterHref(
+        chapter,
+        item.id
+      );
 
-              <img
-                src="${escapeHTML(
-                  item.anh_bia ||
-                  'https://picsum.photos/190/250'
-                )}"
-                alt="${escapeHTML(
-                  item.ten_truyen
-                )}">
+    const gridHTML = `
+      <div class="manga-card">
 
-            </a>
+        <div class="manga-img-box">
 
-          </div>
+          <span class="badge-hot-red">
+            HOT
+          </span>
 
-          <a
-            href="chitiet.html?id=${encodeURIComponent(item.id)}"
-            class="manga-title">
+          <a href="chitiet.html?id=${encodeURIComponent(item.id)}">
 
-            ${escapeHTML(
-              item.ten_truyen
-            )}
+            <img
+              src="${escapeHTML(
+                item.anh_bia ||
+                'https://picsum.photos/190/250'
+              )}"
+              alt="${escapeHTML(item.ten_truyen)}"
+              loading="lazy"
+              decoding="async">
 
           </a>
 
-          <div class="rating-stars">
-            ★★★★★
-          </div>
+        </div>
 
-          <div class="chap-list-item">
+        <a
+          href="chitiet.html?id=${encodeURIComponent(item.id)}"
+          class="manga-title">
+          ${escapeHTML(item.ten_truyen)}
+        </a>
 
-            <a
-              href="${escapeHTML(
-                chapterHref
-              )}">
+        <div class="rating-stars">
+          ★★★★★
+        </div>
 
-              ${escapeHTML(
-                chapterName
-              )}
+        <div class="chap-list-item">
 
-            </a>
+          <a href="${escapeHTML(chapterHref)}">
+            ${escapeHTML(chapterName)}
+          </a>
 
-            ${
-              chapter
-              ? `
-
-                <span class="tag-new-small">
-                  MỚI
-                </span>
-
-              `
-              : ''
-            }
-
-          </div>
+          ${chapter ? `
+            <span class="tag-new-small">
+              MỚI
+            </span>
+          ` : ''}
 
         </div>
 
-      `;
+      </div>
+    `;
 
-      latestGrid.innerHTML +=
-        gridHTML;
+    latestGrid.insertAdjacentHTML(
+      'beforeend',
+      gridHTML
+    );
 
-    }
-  );
+  });
 
+  currentDisplayCount += nextItems.length;
+
+  if (loadMoreBtn) {
+    loadMoreBtn.style.display =
+      currentDisplayCount < allTruyen.length
+        ? 'block'
+        : 'none';
+  }
+
+}
+
+/* =====================================================
+   TẢI THÊM - CHỈ DÀNH CHO LATEST MANGA UPDATES
+===================================================== */
+
+function loadMoreLatest() {
+  renderLatest(false);
 }
 
 /* =====================================================
@@ -2684,7 +2812,7 @@ function renderTopDay() {
     item => {
 
       const chapter =
-        getLatestChapter(
+        getHighestChapter(
           item.id
         );
 
@@ -3071,6 +3199,16 @@ function switchForm(
       ? 'block'
       : 'none';
 
+}
+
+const loadMoreBtn =
+  document.getElementById('loadMoreBtn');
+
+if (loadMoreBtn) {
+  loadMoreBtn.addEventListener(
+    'click',
+    loadMoreLatest
+  );
 }
 
 /* =====================================================

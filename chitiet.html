@@ -1,20 +1,21 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
 <meta charset="utf-8">
-<!-- This site is hosted on Netlify. Anyone can build and deploy a site
-     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=21461b91-612e-41bd-a82d-a369db78de95
-     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Chi Tiết Truyện - Genben Manga</title>
 
-<!-- Logo trên tab trình duyệt -->
-<link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/DichTruyenDrop/Wed/main/logoweb.jpg">
+<link rel="icon"
+      type="image/jpeg"
+      href="https://raw.githubusercontent.com/DichTruyenDrop/Wed/main/logoweb.jpg">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -59,6 +60,7 @@ a {
     color: var(--text-main);
     text-decoration: none;
 }
+
 
 /* =========================================
    HEADER
@@ -108,6 +110,7 @@ a {
     align-items: center;
     gap: 12px;
 }
+
 
 /* =========================================
    SEARCH
@@ -210,6 +213,7 @@ a {
     margin-top: 4px;
 }
 
+
 /* =========================================
    BUTTON
 ========================================= */
@@ -231,6 +235,7 @@ a {
     background: none;
     border: none;
 }
+
 
 /* =========================================
    MOBILE MENU
@@ -290,6 +295,7 @@ a {
     border-bottom: 1px solid var(--border-color);
 }
 
+
 /* =========================================
    MAIN
 ========================================= */
@@ -343,6 +349,7 @@ a {
     vertical-align: middle;
     margin-right: 5px;
 }
+
 
 /* =========================================
    DETAIL
@@ -401,6 +408,7 @@ a {
     word-break: break-word;
 }
 
+
 /* =========================================
    GENRE
 ========================================= */
@@ -429,6 +437,7 @@ a {
     border-color: var(--accent-color);
     color: #fff;
 }
+
 
 /* =========================================
    ACTION
@@ -459,6 +468,7 @@ a {
     border-color: var(--accent-color);
     color: #fff;
 }
+
 
 /* =========================================
    SECTION
@@ -505,8 +515,9 @@ a {
     font-size: 11px;
 }
 
+
 /* =========================================
-   CHAPTER (Ẩn cột ID)
+   CHAPTER
 ========================================= */
 
 .chapter-header {
@@ -564,6 +575,7 @@ a {
     text-align: right;
 }
 
+
 /* =========================================
    SIDEBAR
 ========================================= */
@@ -586,6 +598,7 @@ a {
     border: 1px solid var(--border-color);
     margin-bottom: 20px;
 }
+
 
 /* =========================================
    DANH SÁCH TRUYỆN
@@ -668,6 +681,7 @@ a {
     padding: 12px 5px;
 }
 
+
 /* =========================================
    FOOTER
 ========================================= */
@@ -695,102 +709,140 @@ a {
     color: var(--text-sub);
 }
 
+
 /* =========================================
    MOBILE
 ========================================= */
 
 @media screen and (max-width: 768px) {
+
     .header-top {
         padding: 9px 12px;
     }
+
     .nav-top {
         display: none;
     }
+
     .menu-toggle {
         display: block;
     }
+
     .main-wrapper {
         flex-direction: column;
         margin-top: 12px;
     }
+
     .sidebar-right {
         width: 100%;
     }
+
     .search-input {
         width: 105px;
     }
+
     .search-input:focus {
         width: 145px;
     }
+
     .search-results-dropdown {
         width: 270px;
     }
+
     .manga-detail-title {
         font-size: 18px;
     }
+
     .meta-label {
         width: 105px;
     }
+
     .cover-img-container img {
         max-width: 230px;
         height: 320px;
     }
 }
 
+
 @media screen and (max-width: 430px) {
+
     .header-right {
         gap: 7px;
     }
+
     .search-input {
         width: 90px;
     }
+
     .search-input:focus {
         width: 120px;
     }
+
     .search-results-dropdown {
         right: -45px;
         width: 280px;
     }
+
     .manga-detail-title {
         font-size: 17px;
     }
+
     .meta-label {
         width: 95px;
     }
+
     .meta-item {
         font-size: 12px;
     }
+
     .chapter-table th,
     .chapter-table td {
         padding: 9px 6px;
     }
+
     .chapter-table th:last-child,
     .chapter-table td:last-child {
         width: 80px;
     }
 }
+
 </style>
 </head>
 
+
 <body>
+
 
 <!-- =========================================
      MOBILE MENU
 ========================================= -->
 
 <div id="mySidenav" class="side-nav">
+
     <span class="closebtn" onclick="closeNav()">&times;</span>
+
     <div class="side-nav-content">
+
         <div class="side-nav-btns">
+
             <a href="#" class="btn-mobile">Sign in</a>
+
             <a href="#" class="btn-mobile">Sign up</a>
+
         </div>
+
         <div class="side-nav-links">
-            <a href='/maubia_2'>Trang chủ</a>
+
+            <a href="Maubia_2.html">Trang chủ</a>
+
             <a href="#">About Us</a>
+
         </div>
+
     </div>
+
 </div>
+
 
 
 <!-- =========================================
@@ -798,34 +850,92 @@ a {
 ========================================= -->
 
 <div class="header-top">
+
     <div class="header-left">
+
         <div class="logo">
-            <a href='Maubia_2.html'>
-                <img src="Hinh/genben-logo.png" alt="Genben Manga">
+
+            <a href="Maubia_2.html">
+
+                <img src="Hinh/genben-logo.png"
+                     alt="Genben Manga">
+
             </a>
+
         </div>
+
+
         <div class="nav-top">
-            <a href='Maubia_2.html'>TRANG CHỦ</a>
+
+            <a href="Maubia_2.html">
+                TRANG CHỦ
+            </a>
+
         </div>
+
     </div>
+
+
 
     <div class="header-right">
+
+
         <!-- SEARCH -->
+
         <div class="search-wrapper">
+
             <div class="search-box">
-                <input type="text" id="searchInput" class="search-input" placeholder="Tìm truyện..." autocomplete="off">
-                <span class="search-btn">🔍</span>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    class="search-input"
+                    placeholder="Tìm truyện..."
+                    autocomplete="off">
+
+                <span class="search-btn">
+                    🔍
+                </span>
+
             </div>
-            <div id="searchResults" class="search-results-dropdown"></div>
+
+
+            <div
+                id="searchResults"
+                class="search-results-dropdown">
+            </div>
+
         </div>
 
+
+
         <!-- THEME -->
-        <button class="theme-toggle-btn" id="themeToggle" onclick="toggleTheme()">🌙</button>
+
+        <button
+            class="theme-toggle-btn"
+            id="themeToggle"
+            onclick="toggleTheme()">
+
+            🌙
+
+        </button>
+
+
 
         <!-- MOBILE -->
-        <button class="menu-toggle" onclick="openNav()">☰</button>
+
+        <button
+            class="menu-toggle"
+            onclick="openNav()">
+
+            ☰
+
+        </button>
+
     </div>
+
 </div>
+
 
 
 <!-- =========================================
@@ -833,156 +943,478 @@ a {
 ========================================= -->
 
 <div class="main-wrapper">
+
+
     <div class="content-left">
+
+
         <!-- BREADCRUMB -->
+
         <div class="breadcrumb">
-            <a href='/maubia_2'>Home</a> / <span id="breadMangaTitle">Đang tải...</span>
+
+            <a href="Maubia_2.html">
+                Home
+            </a>
+
+            /
+
+            <span id="breadMangaTitle">
+                Đang tải...
+            </span>
+
         </div>
 
+
+
         <!-- TITLE -->
-        <h1 class="manga-detail-title" id="mangaTitle">
-            <span class="badge-hot">HOT</span> Đang tải dữ liệu...
+
+        <h1
+            class="manga-detail-title"
+            id="mangaTitle">
+
+            <span class="badge-hot">
+                HOT
+            </span>
+
+            Đang tải dữ liệu...
+
         </h1>
+
+
 
         <!-- =========================================
              THÔNG TIN
         ========================================= -->
+
         <div class="detail-meta-box">
+
+
             <!-- COVER -->
+
             <div class="cover-img-container">
-                <img id="mangaCover" src="" alt="Bìa truyện">
+
+                <img
+                    id="mangaCover"
+                    src=""
+                    alt="Bìa truyện">
+
             </div>
+
+
 
             <!-- INFO -->
+
             <div class="meta-info-list">
-                <!-- TÁC GIẢ -->
+
+
                 <div class="meta-item">
-                    <span class="meta-icon">👤</span>
-                    <span class="meta-label">Tác giả</span>
-                    <span class="meta-val" id="mangaAuthor">Đang cập nhật</span>
+
+                    <span class="meta-icon">
+                        👤
+                    </span>
+
+                    <span class="meta-label">
+                        Tác giả
+                    </span>
+
+                    <span
+                        class="meta-val"
+                        id="mangaAuthor">
+
+                        Đang cập nhật
+
+                    </span>
+
                 </div>
 
-                <!-- NGÀY TẠO -->
+
+
                 <div class="meta-item">
-                    <span class="meta-icon">📅</span>
-                    <span class="meta-label">Ngày tạo</span>
-                    <span class="meta-val" id="mangaCreatedAt">Đang cập nhật</span>
+
+                    <span class="meta-icon">
+                        📅
+                    </span>
+
+                    <span class="meta-label">
+                        Ngày tạo
+                    </span>
+
+                    <span
+                        class="meta-val"
+                        id="mangaCreatedAt">
+
+                        Đang cập nhật
+
+                    </span>
+
                 </div>
 
-                <!-- NHÓM DỊCH -->
+
+
                 <div class="meta-item">
-                    <span class="meta-icon">👥</span>
-                    <span class="meta-label">Nhóm dịch</span>
-                    <span class="meta-val" id="mangaNhomDich">Đang cập nhật</span>
+
+                    <span class="meta-icon">
+                        👥
+                    </span>
+
+                    <span class="meta-label">
+                        Nhóm dịch
+                    </span>
+
+                    <span
+                        class="meta-val"
+                        id="mangaNhomDich">
+
+                        Đang cập nhật
+
+                    </span>
+
                 </div>
 
-                <!-- TỔNG CHAP -->
+
+
                 <div class="meta-item">
-                    <span class="meta-icon">🎼</span>
-                    <span class="meta-label">Tổng số chap</span>
-                    <span class="meta-val" id="mangaTotalChap">0</span>
+
+                    <span class="meta-icon">
+                        🎼
+                    </span>
+
+                    <span class="meta-label">
+                        Tổng số chap
+                    </span>
+
+                    <span
+                        class="meta-val"
+                        id="mangaTotalChap">
+
+                        0
+
+                    </span>
+
                 </div>
 
-                <!-- TÌNH TRẠNG -->
+
+
                 <div class="meta-item">
-                    <span class="meta-icon">📡</span>
-                    <span class="meta-label">Tình trạng</span>
-                    <span class="meta-val" id="mangaStatus">Đang ra</span>
+
+                    <span class="meta-icon">
+                        📡
+                    </span>
+
+                    <span class="meta-label">
+                        Tình trạng
+                    </span>
+
+                    <span
+                        class="meta-val"
+                        id="mangaStatus">
+
+                        Đang ra
+
+                    </span>
+
                 </div>
 
-                <!-- ĐỘ TUỔI -->
+
+
                 <div class="meta-item">
-                    <span class="meta-icon">🧍</span>
-                    <span class="meta-label">Độ tuổi</span>
-                    <span class="meta-val" id="mangaAge">13+</span>
+
+                    <span class="meta-icon">
+                        🧍
+                    </span>
+
+                    <span class="meta-label">
+                        Độ tuổi
+                    </span>
+
+                    <span
+                        class="meta-val"
+                        id="mangaAge">
+
+                        13+
+
+                    </span>
+
                 </div>
 
-                <!-- LIKE -->
+
+
                 <div class="meta-item">
-                    <span class="meta-icon">👍</span>
-                    <span class="meta-label">Lượt thích</span>
-                    <span class="meta-val" id="mangaLikes">0</span>
+
+                    <span class="meta-icon">
+                        👍
+                    </span>
+
+                    <span class="meta-label">
+                        Lượt thích
+                    </span>
+
+                    <span
+                        class="meta-val"
+                        id="mangaLikes">
+
+                        0
+
+                    </span>
+
                 </div>
 
-                <!-- FOLLOW -->
+
+
                 <div class="meta-item">
-                    <span class="meta-icon">❤️</span>
-                    <span class="meta-label">Lượt theo dõi</span>
-                    <span class="meta-val" id="mangaFollows">0</span>
+
+                    <span class="meta-icon">
+                        ❤️
+                    </span>
+
+                    <span class="meta-label">
+                        Lượt theo dõi
+                    </span>
+
+                    <span
+                        class="meta-val"
+                        id="mangaFollows">
+
+                        0
+
+                    </span>
+
                 </div>
 
-                <!-- VIEW -->
+
+
                 <div class="meta-item">
-                    <span class="meta-icon">👁️</span>
-                    <span class="meta-label">Lượt xem</span>
-                    <span class="meta-val" id="mangaViews">0</span>
+
+                    <span class="meta-icon">
+                        👁️
+                    </span>
+
+                    <span class="meta-label">
+                        Lượt xem
+                    </span>
+
+                    <span
+                        class="meta-val"
+                        id="mangaViews">
+
+                        0
+
+                    </span>
+
                 </div>
+
             </div>
 
+
+
             <!-- THỂ LOẠI -->
-            <div class="genre-tags-container" id="genreTagsContainer"></div>
+
+            <div
+                class="genre-tags-container"
+                id="genreTagsContainer">
+            </div>
+
         </div>
+
+
 
         <!-- =========================================
              NÚT ĐỌC
         ========================================= -->
+
         <div class="action-buttons">
-            <a href="#" id="btnReadFirst" class="btn-action">Đọc Từ Đầu</a>
-            <a href="#" id="btnReadLast" class="btn-action">Đọc Mới Nhất</a>
+
+            <a
+                href="#"
+                id="btnReadFirst"
+                class="btn-action">
+
+                Đọc Từ Đầu
+
+            </a>
+
+
+            <a
+                href="#"
+                id="btnReadLast"
+                class="btn-action">
+
+                Đọc Mới Nhất
+
+            </a>
+
         </div>
+
+
 
         <!-- =========================================
              MÔ TẢ
         ========================================= -->
-        <div class="section-header-bar">★ TÓM TẮT TRUYỆN</div>
-        <div class="summary-content">
-            <div id="summaryText" class="summary-text">Đang tải tóm tắt...</div>
-            <span class="toggle-summary-btn" id="toggleSummary" onclick="toggleSummary()">Show more ▾</span>
+
+        <div class="section-header-bar">
+
+            ★ TÓM TẮT TRUYỆN
+
         </div>
+
+
+        <div class="summary-content">
+
+            <div
+                id="summaryText"
+                class="summary-text">
+
+                Đang tải tóm tắt...
+
+            </div>
+
+
+            <span
+                class="toggle-summary-btn"
+                id="toggleSummary"
+                onclick="toggleSummary()">
+
+                Show more ▾
+
+            </span>
+
+        </div>
+
+
 
         <!-- =========================================
              CHAPTER
         ========================================= -->
+
         <div class="section-header-bar chapter-header">
-            <span>★ DANH SÁCH CHƯƠNG</span>
-            <button class="sort-btn" onclick="toggleSortOrder()" title="Đảo ngược danh sách">⇅</button>
+
+            <span>
+                ★ DANH SÁCH CHƯƠNG
+            </span>
+
+
+            <button
+                class="sort-btn"
+                onclick="toggleSortOrder()"
+                title="Đảo ngược danh sách">
+
+                ⇅
+
+            </button>
+
         </div>
 
+
+
         <table class="chapter-table">
+
             <thead>
+
                 <tr>
-                    <th>Tên Chapter</th>
-                    <th class="col-id" style="text-align:center;">ID</th>
-                    <th style="text-align:right;">Trạng thái</th>
+
+                    <th>
+                        Tên Chapter
+                    </th>
+
+                    <th
+                        class="col-id"
+                        style="text-align:center;">
+
+                        ID
+
+                    </th>
+
+                    <th
+                        style="text-align:right;">
+
+                        Trạng thái
+
+                    </th>
+
                 </tr>
+
             </thead>
+
+
             <tbody id="chapterListBody">
+
                 <tr>
-                    <td colspan="3" style="text-align:center; padding:15px;">Đang tải danh sách chapter...</td>
+
+                    <td
+                        colspan="3"
+                        style="text-align:center; padding:15px;">
+
+                        Đang tải danh sách chapter...
+
+                    </td>
+
                 </tr>
+
             </tbody>
+
         </table>
+
     </div>
+
+
 
     <!-- =========================================
          SIDEBAR
     ========================================= -->
+
     <div class="sidebar-right">
+
+
         <!-- DANH SÁCH TRUYỆN -->
-        <div class="sidebar-widget-title">DANH SÁCH TRUYỆN</div>
-        <div class="sidebar-box">
-            <div id="storyList" class="story-list">
-                <div class="story-loading">Đang tải danh sách truyện...</div>
-            </div>
+
+        <div class="sidebar-widget-title">
+
+            DANH SÁCH TRUYỆN
+
         </div>
 
-        <!-- LỊCH SỬ -->
-        <div class="sidebar-widget-title">LỊCH SỬ ĐỌC</div>
+
         <div class="sidebar-box">
-            <div class="story-empty">Chưa có lịch sử đọc truyện</div>
+
+            <div
+                id="storyList"
+                class="story-list">
+
+                <div class="story-loading">
+
+                    Đang tải danh sách truyện...
+
+                </div>
+
+            </div>
+
         </div>
+
+
+
+        <!-- LỊCH SỬ -->
+
+        <div class="sidebar-widget-title">
+
+            LỊCH SỬ ĐỌC
+
+        </div>
+
+
+        <div class="sidebar-box">
+
+            <div class="story-empty">
+
+                Chưa có lịch sử đọc truyện
+
+            </div>
+
+        </div>
+
     </div>
+
 </div>
+
 
 
 <!-- =========================================
@@ -990,23 +1422,47 @@ a {
 ========================================= -->
 
 <div class="footer">
+
     <div class="footer-links">
-        <a href='Maubia_2.html'>HOME</a>
-        <a href="#">ABOUT US</a>
+
+        <a href="Maubia_2.html">
+            HOME
+        </a>
+
+        <a href="#">
+            ABOUT US
+        </a>
+
     </div>
-    <div>© 2026 Genben Manga. All rights reserved</div>
+
+
+    <div>
+        © 2026 Genben Manga. All rights reserved
+    </div>
+
 </div>
 
 
+
 <script>
+
 
 /* =====================================================
    SUPABASE
 ===================================================== */
 
-const SUPABASE_URL = 'https://ngfodgexhzghgrczaejl.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_czWnJAV3rA8_TSllTSU15A_sgTkaAV7';
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL =
+    'https://ngfodgexhzghgrczaejl.supabase.co';
+
+const SUPABASE_KEY =
+    'sb_publishable_czWnJAV3rA8_TSllTSU15A_sgTkaAV7';
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
 
 
 /* =====================================================
@@ -1014,34 +1470,53 @@ const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 ===================================================== */
 
 let chaptersData = [];
+
 let isAscending = false;
+
 
 
 /* =====================================================
    LẤY ID TRUYỆN
 ===================================================== */
 
-const urlParams = new URLSearchParams(window.location.search);
-const truyenId = urlParams.get('id');
+const urlParams =
+    new URLSearchParams(window.location.search);
+
+const truyenId =
+    urlParams.get('id');
+
 
 
 /* =====================================================
    LOAD TRANG
 ===================================================== */
 
-window.addEventListener('DOMContentLoaded', async function() {
-    setupSearchLogic();
-    loadTheme();
-    await loadStoryList();
+window.addEventListener(
+    'DOMContentLoaded',
+    async function() {
 
-    if (!truyenId) {
-        showError('Không tìm thấy ID truyện.');
-        return;
+        setupSearchLogic();
+
+        loadTheme();
+
+        await loadStoryList();
+
+        if (!truyenId) {
+
+            showError(
+                'Không tìm thấy ID truyện.'
+            );
+
+            return;
+        }
+
+        await loadMangaDetail(truyenId);
+
+        await loadChapterList(truyenId);
+
     }
+);
 
-    await loadMangaDetail(truyenId);
-    await loadChapterList(truyenId);
-});
 
 
 /* =====================================================
@@ -1049,51 +1524,192 @@ window.addEventListener('DOMContentLoaded', async function() {
 ===================================================== */
 
 async function loadMangaDetail(id) {
+
     try {
-        const { data, error } = await supabaseClient
-            .from('Truyện')
-            .select('*')
-            .eq('id', id)
-            .single();
+
+        const { data, error } =
+            await supabaseClient
+
+                .from('Truyện')
+
+                .select('*')
+
+                .eq('id', id)
+
+                .single();
+
 
         if (error) throw error;
-        if (!data) throw new Error('Không tìm thấy truyện');
 
-        document.getElementById('breadMangaTitle').textContent = data.ten_truyen || 'Không có tên';
-        document.getElementById('mangaTitle').innerHTML = `
-            <span class="badge-hot">HOT</span>
-            ${escapeHTML(data.ten_truyen || 'Không có tên')}
+        if (!data) {
+
+            throw new Error(
+                'Không tìm thấy truyện'
+            );
+
+        }
+
+
+        document.getElementById(
+            'breadMangaTitle'
+        ).textContent =
+            data.ten_truyen ||
+            'Không có tên';
+
+
+
+        document.getElementById(
+            'mangaTitle'
+        ).innerHTML = `
+
+            <span class="badge-hot">
+                HOT
+            </span>
+
+            ${escapeHTML(
+                data.ten_truyen ||
+                'Không có tên'
+            )}
+
         `;
 
-        const cover = document.getElementById('mangaCover');
-        cover.src = data.anh_bia || 'https://picsum.photos/260/360';
-        cover.alt = data.ten_truyen || 'Bìa truyện';
-        cover.onerror = function() {
-            this.onerror = null;
-            this.src = 'https://picsum.photos/260/360';
-        };
 
-        document.getElementById('mangaAuthor').textContent = data.tac_gia || 'Đang cập nhật';
-        document.getElementById('mangaCreatedAt').textContent = formatDate(data.created_at);
-        document.getElementById('mangaNhomDich').textContent = data.nhom_dich || 'Đang cập nhật';
-        document.getElementById('mangaTotalChap').textContent = '0';
-        document.getElementById('mangaStatus').textContent = data.trang_thai || 'Đang ra';
-        document.getElementById('mangaAge').textContent = data.do_tuoi || '13+';
-        document.getElementById('mangaLikes').textContent = formatNumber(data.luot_thich);
-        document.getElementById('mangaFollows').textContent = formatNumber(data.luot_theo_doi);
-        document.getElementById('mangaViews').textContent = formatNumber(data.luot_xem);
 
-        document.getElementById('summaryText').textContent = data.mo_ta || 'Chưa có mô tả cho bộ truyện này.';
+        const cover =
+            document.getElementById(
+                'mangaCover'
+            );
 
-        loadGenres(data.the_loai);
 
-        document.title = `${data.ten_truyen || 'Chi tiết truyện'} - Genben Manga`;
+        cover.src =
+            data.anh_bia ||
+            'https://picsum.photos/260/360';
+
+
+        cover.alt =
+            data.ten_truyen ||
+            'Bìa truyện';
+
+
+        cover.onerror =
+            function() {
+
+                this.onerror = null;
+
+                this.src =
+                    'https://picsum.photos/260/360';
+
+            };
+
+
+
+        document.getElementById(
+            'mangaAuthor'
+        ).textContent =
+            data.tac_gia ||
+            'Đang cập nhật';
+
+
+
+        document.getElementById(
+            'mangaCreatedAt'
+        ).textContent =
+            formatDate(
+                data.created_at
+            );
+
+
+
+        document.getElementById(
+            'mangaNhomDich'
+        ).textContent =
+            data.nhom_dich ||
+            'Đang cập nhật';
+
+
+
+        document.getElementById(
+            'mangaTotalChap'
+        ).textContent = '0';
+
+
+
+        document.getElementById(
+            'mangaStatus'
+        ).textContent =
+            data.trang_thai ||
+            'Đang ra';
+
+
+
+        document.getElementById(
+            'mangaAge'
+        ).textContent =
+            data.do_tuoi ||
+            '13+';
+
+
+
+        document.getElementById(
+            'mangaLikes'
+        ).textContent =
+            formatNumber(
+                data.luot_thich
+            );
+
+
+
+        document.getElementById(
+            'mangaFollows'
+        ).textContent =
+            formatNumber(
+                data.luot_theo_doi
+            );
+
+
+
+        document.getElementById(
+            'mangaViews'
+        ).textContent =
+            formatNumber(
+                data.luot_xem
+            );
+
+
+
+        document.getElementById(
+            'summaryText'
+        ).textContent =
+            data.mo_ta ||
+            'Chưa có mô tả cho bộ truyện này.';
+
+
+
+        loadGenres(
+            data.the_loai
+        );
+
+
+        document.title =
+            `${data.ten_truyen || 'Chi tiết truyện'} - Genben Manga`;
+
     }
+
     catch (error) {
-        console.error('Lỗi tải thông tin truyện:', error);
-        showError('Không thể tải dữ liệu truyện.');
+
+        console.error(
+            'Lỗi tải thông tin truyện:',
+            error
+        );
+
+        showError(
+            'Không thể tải dữ liệu truyện.'
+        );
+
     }
+
 }
+
 
 
 /* =====================================================
@@ -1101,23 +1717,107 @@ async function loadMangaDetail(id) {
 ===================================================== */
 
 function loadGenres(genreText) {
-    const container = document.getElementById('genreTagsContainer');
+
+    const container =
+        document.getElementById(
+            'genreTagsContainer'
+        );
+
+
     container.innerHTML = '';
+
+
     if (!genreText) return;
 
-    const genres = String(genreText)
-        .split(',')
-        .map(genre => genre.trim())
-        .filter(genre => genre.length > 0);
 
-    genres.forEach(function(genre) {
-        const tag = document.createElement('a');
-        tag.className = 'genre-tag-btn';
-        tag.href = '#';
-        tag.textContent = genre;
-        container.appendChild(tag);
-    });
+    const genres =
+        String(genreText)
+
+            .split(',')
+
+            .map(
+                genre => genre.trim()
+            )
+
+            .filter(
+                genre => genre.length > 0
+            );
+
+
+    genres.forEach(
+        function(genre) {
+
+            const tag =
+                document.createElement(
+                    'a'
+                );
+
+
+            tag.className =
+                'genre-tag-btn';
+
+
+            tag.href = '#';
+
+
+            tag.textContent =
+                genre;
+
+
+            container.appendChild(
+                tag
+            );
+
+        }
+    );
+
 }
+
+
+
+/* =====================================================
+   LẤY SỐ CHAPTER
+===================================================== */
+
+/*
+   Ví dụ:
+
+   Chapter 62       -> 62
+   Chương 47        -> 47
+   Chapter 33.5     -> 33.5
+   Chap 12.5        -> 12.5
+   Chapter 100      -> 100
+*/
+
+function getChapterNumber(name) {
+
+    if (!name) {
+        return -Infinity;
+    }
+
+
+    const matches =
+        String(name).match(
+            /\d+(?:\.\d+)?/g
+        );
+
+
+    if (
+        !matches ||
+        matches.length === 0
+    ) {
+
+        return -Infinity;
+
+    }
+
+
+    return parseFloat(
+        matches[matches.length - 1]
+    );
+
+}
+
 
 
 /* =====================================================
@@ -1125,43 +1825,172 @@ function loadGenres(genreText) {
 ===================================================== */
 
 async function loadChapterList(id) {
+
     try {
-        const { data, error } = await supabaseClient
-            .from('Chapters')
-            .select('id, ten_chap, link_html, truyen_id')
-            .eq('truyen_id', Number(id))
-            .order('id', { ascending: false });
+
+        const { data, error } =
+            await supabaseClient
+
+                .from('Chapters')
+
+                .select(
+                    'id, ten_chap, link_html, truyen_id'
+                )
+
+                .eq(
+                    'truyen_id',
+                    Number(id)
+                );
+
 
         if (error) throw error;
 
-        chaptersData = data || [];
-        document.getElementById('mangaTotalChap').textContent = chaptersData.length;
-        renderChapters(chaptersData);
 
-        if (chaptersData.length > 0) {
-            const newest = chaptersData[0];
-            const oldest = chaptersData[chaptersData.length - 1];
+        chaptersData =
+            data || [];
 
-            document.getElementById('btnReadFirst').href = `doctruyen.html?chap_id=${oldest.id}`;
-            document.getElementById('btnReadLast').href = `doctruyen.html?chap_id=${newest.id}`;
+
+
+        /*
+           QUAN TRỌNG:
+
+           Sắp xếp theo SỐ CHAPTER
+           chứ không theo ID database.
+
+           Cao -> thấp
+        */
+
+        chaptersData.sort(
+            function(a, b) {
+
+                const numA =
+                    getChapterNumber(
+                        a.ten_chap
+                    );
+
+                const numB =
+                    getChapterNumber(
+                        b.ten_chap
+                    );
+
+
+                return numB - numA;
+
+            }
+        );
+
+
+        isAscending = false;
+
+
+
+        document.getElementById(
+            'mangaTotalChap'
+        ).textContent =
+            chaptersData.length;
+
+
+
+        renderChapters(
+            chaptersData
+        );
+
+
+
+        /* =========================================
+           NÚT ĐỌC
+        ========================================= */
+
+        if (
+            chaptersData.length > 0
+        ) {
+
+            /*
+               Mảng đang:
+
+               [62, 47, 46, ... 33]
+
+               => phần tử đầu = cao nhất
+               => phần tử cuối = thấp nhất
+            */
+
+            const newest =
+                chaptersData[0];
+
+            const oldest =
+                chaptersData[
+                    chaptersData.length - 1
+                ];
+
+
+
+            /* Đọc từ chapter thấp nhất */
+
+            document.getElementById(
+                'btnReadFirst'
+            ).href =
+                `doctruyen.html?chap_id=${oldest.id}`;
+
+
+
+            /* Đọc chapter mới nhất */
+
+            document.getElementById(
+                'btnReadLast'
+            ).href =
+                `doctruyen.html?chap_id=${newest.id}`;
+
         }
+
         else {
-            document.getElementById('btnReadFirst').href = '#';
-            document.getElementById('btnReadLast').href = '#';
+
+            document.getElementById(
+                'btnReadFirst'
+            ).href = '#';
+
+
+            document.getElementById(
+                'btnReadLast'
+            ).href = '#';
 
         }
+
     }
+
     catch (error) {
-        console.error('Lỗi tải Chapters:', error);
-        document.getElementById('chapterListBody').innerHTML = `
+
+        console.error(
+            'Lỗi tải Chapters:',
+            error
+        );
+
+
+        document.getElementById(
+            'chapterListBody'
+        ).innerHTML = `
+
             <tr>
-                <td colspan="3" style="text-align:center; padding:15px; color:var(--text-sub);">
+
+                <td
+                    colspan="3"
+                    style="
+                        text-align:center;
+                        padding:15px;
+                        color:var(--text-sub);
+                    ">
+
                     Không thể tải danh sách chapter.
+
                 </td>
+
             </tr>
+
         `;
+
     }
+
 }
+
 
 
 /* =====================================================
@@ -1169,45 +1998,154 @@ async function loadChapterList(id) {
 ===================================================== */
 
 function renderChapters(data) {
-    const tbody = document.getElementById('chapterListBody');
+
+    const tbody =
+        document.getElementById(
+            'chapterListBody'
+        );
+
+
     tbody.innerHTML = '';
 
-    if (!data || data.length === 0) {
+
+    if (
+        !data ||
+        data.length === 0
+    ) {
+
         tbody.innerHTML = `
+
             <tr>
-                <td colspan="3" style="text-align:center; padding:15px; color:var(--text-sub);">
+
+                <td
+                    colspan="3"
+                    style="
+                        text-align:center;
+                        padding:15px;
+                        color:var(--text-sub);
+                    ">
+
                     Chưa có chapter nào.
+
                 </td>
+
             </tr>
+
         `;
+
         return;
+
     }
 
-    data.forEach(function(chap, index) {
-        const tr = document.createElement('tr');
 
-        const tdName = document.createElement('td');
-        tdName.className = 'chap-name';
-        const link = document.createElement('a');
-        link.href = `doctruyen.html?chap_id=${chap.id}`;
-        link.textContent = chap.ten_chap || `Chapter ${index + 1}`;
-        tdName.appendChild(link);
 
-        const tdId = document.createElement('td');
-        tdId.className = 'chap-number';
-        tdId.textContent = chap.id;
+    data.forEach(
+        function(chap, index) {
 
-        const tdStatus = document.createElement('td');
-        tdStatus.className = 'chap-date';
-        tdStatus.textContent = 'Có bản dịch';
+            const tr =
+                document.createElement(
+                    'tr'
+                );
 
-        tr.appendChild(tdName);
-        tr.appendChild(tdId);
-        tr.appendChild(tdStatus);
 
-        tbody.appendChild(tr);
-    });
+
+            /* =====================================
+               TÊN CHAPTER
+            ===================================== */
+
+            const tdName =
+                document.createElement(
+                    'td'
+                );
+
+
+            tdName.className =
+                'chap-name';
+
+
+
+            const link =
+                document.createElement(
+                    'a'
+                );
+
+
+            link.href =
+                `doctruyen.html?chap_id=${chap.id}`;
+
+
+            link.textContent =
+                chap.ten_chap ||
+                `Chapter ${index + 1}`;
+
+
+            tdName.appendChild(
+                link
+            );
+
+
+
+            /* =====================================
+               ID
+               Vẫn giữ trong HTML nhưng CSS ẩn
+            ===================================== */
+
+            const tdId =
+                document.createElement(
+                    'td'
+                );
+
+
+            tdId.className =
+                'chap-number';
+
+
+            tdId.textContent =
+                chap.id;
+
+
+
+            /* =====================================
+               TRẠNG THÁI
+            ===================================== */
+
+            const tdStatus =
+                document.createElement(
+                    'td'
+                );
+
+
+            tdStatus.className =
+                'chap-date';
+
+
+            tdStatus.textContent =
+                'Có bản dịch';
+
+
+
+            tr.appendChild(
+                tdName
+            );
+
+            tr.appendChild(
+                tdId
+            );
+
+            tr.appendChild(
+                tdStatus
+            );
+
+
+            tbody.appendChild(
+                tr
+            );
+
+        }
+    );
+
 }
+
 
 
 /* =====================================================
@@ -1215,10 +2153,55 @@ function renderChapters(data) {
 ===================================================== */
 
 function toggleSortOrder() {
-    chaptersData.reverse();
-    isAscending = !isAscending;
-    renderChapters(chaptersData);
+
+    isAscending =
+        !isAscending;
+
+
+
+    chaptersData.sort(
+        function(a, b) {
+
+            const numA =
+                getChapterNumber(
+                    a.ten_chap
+                );
+
+            const numB =
+                getChapterNumber(
+                    b.ten_chap
+                );
+
+
+            if (isAscending) {
+
+                /*
+                   Thấp -> cao
+                */
+
+                return numA - numB;
+
+            }
+            else {
+
+                /*
+                   Cao -> thấp
+                */
+
+                return numB - numA;
+
+            }
+
+        }
+    );
+
+
+    renderChapters(
+        chaptersData
+    );
+
 }
+
 
 
 /* =====================================================
@@ -1226,137 +2209,866 @@ function toggleSortOrder() {
 ===================================================== */
 
 async function loadStoryList() {
-    const container = document.getElementById('storyList');
+
+    const container =
+        document.getElementById(
+            'storyList'
+        );
+
+
     try {
-        const { data, error } = await supabaseClient
-            .from('Truyện')
-            .select('id, ten_truyen, anh_bia, the_loai, nhom_dich')
-            .order('id', { ascending: false });
+
+        const { data, error } =
+            await supabaseClient
+
+                .from('Truyện')
+
+                .select(
+                    'id, ten_truyen, anh_bia, the_loai, nhom_dich'
+                )
+
+                .order(
+                    'id',
+                    {
+                        ascending: false
+                    }
+                );
+
 
         if (error) throw error;
+
+
         container.innerHTML = '';
 
-        if (!data || data.length === 0) {
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+
             container.innerHTML = `
-                <div class="story-empty">Chưa có truyện nào.</div>
+
+                <div class="story-empty">
+
+                    Chưa có truyện nào.
+
+                </div>
+
             `;
+
             return;
+
         }
 
-        data.forEach(function(story) {
-            const item = document.createElement('a');
-            item.className = 'story-list-item';
 
-            if (String(story.id) === String(truyenId)) {
-                item.classList.add('current-story');
+
+        data.forEach(
+            function(story) {
+
+                const item =
+                    document.createElement(
+                        'a'
+                    );
+
+
+                item.className =
+                    'story-list-item';
+
+
+
+                if (
+                    String(story.id) ===
+                    String(truyenId)
+                ) {
+
+                    item.classList.add(
+                        'current-story'
+                    );
+
+                }
+
+
+
+                item.href =
+                    `chitiet.html?id=${story.id}`;
+
+
+
+                /* =================================
+                   ẢNH
+                ================================= */
+
+                const img =
+                    document.createElement(
+                        'img'
+                    );
+
+
+                img.src =
+                    story.anh_bia ||
+                    'https://picsum.photos/60/80';
+
+
+                img.alt =
+                    story.ten_truyen ||
+                    '';
+
+
+                img.loading =
+                    'lazy';
+
+
+                img.onerror =
+                    function() {
+
+                        this.onerror = null;
+
+                        this.src =
+                            'https://picsum.photos/60/80';
+
+                    };
+
+
+
+                /* =================================
+                   THÔNG TIN
+                ================================= */
+
+                const info =
+                    document.createElement(
+                        'div'
+                    );
+
+
+                info.className =
+                    'story-list-info';
+
+
+
+                const title =
+                    document.createElement(
+                        'span'
+                    );
+
+
+                title.className =
+                    'story-list-title';
+
+
+                title.textContent =
+                    story.ten_truyen ||
+                    'Không có tên';
+
+
+
+                const group =
+                    document.createElement(
+                        'span'
+                    );
+
+
+                group.className =
+                    'story-list-group';
+
+
+                group.textContent =
+                    story.nhom_dich ||
+                    'Đang cập nhật';
+
+
+
+                const genre =
+                    document.createElement(
+                        'span'
+                    );
+
+
+                genre.className =
+                    'story-list-genre';
+
+
+                genre.textContent =
+                    story.the_loai ||
+                    'Manga';
+
+
+
+                info.appendChild(
+                    title
+                );
+
+
+                info.appendChild(
+                    group
+                );
+
+
+                info.appendChild(
+                    genre
+                );
+
+
+
+                item.appendChild(
+                    img
+                );
+
+
+                item.appendChild(
+                    info
+                );
+
+
+                container.appendChild(
+                    item
+                );
+
             }
+        );
 
-            item.href = `chitiet.html?id=${story.id}`;
-
-            const img = document.createElement('img');
-            img.src = story.anh_bia || 'https://picsum.photos/60/80';
-            img.alt = story.ten_truyen || '';
-            img.onerror = function() {
-                this.onerror = null;
-                this.src = 'https://picsum.photos/60/80';
-            };
-
-            const info = document.createElement('div');
-            info.className = 'story-list-info';
-
-            const title = document.createElement('span');
-            title.className = 'story-list-title';
-            title.textContent = story.ten_truyen || 'Không có tên';
-
-            const group = document.createElement('span');
-            group.className = 'story-list-group';
-            group.textContent = story.nhom_dich || 'Đang cập nhật';
-
-            const genre = document.createElement('span');
-            genre.className = 'story-list-genre';
-            genre.textContent = story.the_loai || 'Manga';
-
-            info.appendChild(title);
-            info.appendChild(group);
-            info.appendChild(genre);
-
-            item.appendChild(img);
-            item.appendChild(info);
-
-            container.appendChild(item);
-        });
     }
+
     catch (error) {
-        console.error('Lỗi danh sách truyện:', error);
-        container.innerHTML = `<div class="story-error">Không thể tải danh sách.</div>`;
+
+        console.error(
+            'Lỗi danh sách truyện:',
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="story-error">
+
+                Không thể tải danh sách.
+
+            </div>
+
+        `;
+
     }
+
 }
+
 
 
 /* =====================================================
-   CÁC HÀM HỖ TRỢ (UTILS)
+   TÌM KIẾM TRUYỆN
 ===================================================== */
 
-function escapeHTML(str) {
-    return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+function setupSearchLogic() {
+
+    const input =
+        document.getElementById(
+            'searchInput'
+        );
+
+
+    const results =
+        document.getElementById(
+            'searchResults'
+        );
+
+
+    if (!input || !results) {
+        return;
+    }
+
+
+
+    let searchTimer = null;
+
+
+
+    input.addEventListener(
+        'input',
+        function() {
+
+            clearTimeout(
+                searchTimer
+            );
+
+
+            const keyword =
+                input.value.trim();
+
+
+            if (!keyword) {
+
+                results.innerHTML =
+                    '';
+
+                results.classList.remove(
+                    'active'
+                );
+
+                return;
+
+            }
+
+
+
+            searchTimer =
+                setTimeout(
+                    function() {
+
+                        searchStories(
+                            keyword
+                        );
+
+                    },
+                    250
+                );
+
+        }
+    );
+
+
+
+    document.addEventListener(
+        'click',
+        function(event) {
+
+            if (
+                !event.target.closest(
+                    '.search-wrapper'
+                )
+            ) {
+
+                results.classList.remove(
+                    'active'
+                );
+
+            }
+
+        }
+    );
+
 }
 
-function formatDate(dateStr) {
-    if (!dateStr) return 'Đang cập nhật';
-    const d = new Date(dateStr);
-    return isNaN(d.getTime()) ? dateStr : d.toLocaleDateString('vi-VN');
+
+
+/* =====================================================
+   SEARCH TRUYỆN
+===================================================== */
+
+async function searchStories(keyword) {
+
+    const results =
+        document.getElementById(
+            'searchResults'
+        );
+
+
+    try {
+
+        const { data, error } =
+            await supabaseClient
+
+                .from('Truyện')
+
+                .select(
+                    'id, ten_truyen, anh_bia, nhom_dich'
+                )
+
+                .ilike(
+                    'ten_truyen',
+                    `%${keyword}%`
+                )
+
+                .limit(10);
+
+
+        if (error) throw error;
+
+
+        results.innerHTML = '';
+
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+
+            results.innerHTML = `
+
+                <div class="search-item">
+
+                    <div class="search-item-info">
+
+                        <span class="search-item-sub">
+
+                            Không tìm thấy truyện.
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+
+            results.classList.add(
+                'active'
+            );
+
+
+            return;
+
+        }
+
+
+
+        data.forEach(
+            function(story) {
+
+                const item =
+                    document.createElement(
+                        'a'
+                    );
+
+
+                item.className =
+                    'search-item';
+
+
+                item.href =
+                    `chitiet.html?id=${story.id}`;
+
+
+
+                const img =
+                    document.createElement(
+                        'img'
+                    );
+
+
+                img.src =
+                    story.anh_bia ||
+                    'https://picsum.photos/60/80';
+
+
+                img.alt =
+                    story.ten_truyen ||
+                    '';
+
+
+                img.loading =
+                    'lazy';
+
+
+
+                img.onerror =
+                    function() {
+
+                        this.onerror = null;
+
+                        this.src =
+                            'https://picsum.photos/60/80';
+
+                    };
+
+
+
+                const info =
+                    document.createElement(
+                        'div'
+                    );
+
+
+                info.className =
+                    'search-item-info';
+
+
+
+                const title =
+                    document.createElement(
+                        'span'
+                    );
+
+
+                title.className =
+                    'search-item-title';
+
+
+                title.textContent =
+                    story.ten_truyen ||
+                    'Không có tên';
+
+
+
+                const sub =
+                    document.createElement(
+                        'span'
+                    );
+
+
+                sub.className =
+                    'search-item-sub';
+
+
+                sub.textContent =
+                    story.nhom_dich ||
+                    'Đang cập nhật';
+
+
+
+                info.appendChild(
+                    title
+                );
+
+
+                info.appendChild(
+                    sub
+                );
+
+
+
+                item.appendChild(
+                    img
+                );
+
+
+                item.appendChild(
+                    info
+                );
+
+
+                results.appendChild(
+                    item
+                );
+
+            }
+        );
+
+
+        results.classList.add(
+            'active'
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            'Lỗi tìm kiếm:',
+            error
+        );
+
+
+        results.innerHTML = `
+
+            <div class="search-item">
+
+                <div class="search-item-info">
+
+                    <span class="search-item-sub">
+
+                        Lỗi tìm kiếm.
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+        results.classList.add(
+            'active'
+        );
+
+    }
+
 }
 
-function formatNumber(num) {
-    if (num == undefined || num === null) return '0';
-    return Number(num).toLocaleString('vi-VN');
-}
 
-function showError(msg) {
-    const titleEl = document.getElementById('mangaTitle');
-    if (titleEl) titleEl.textContent = msg;
-}
+
+/* =====================================================
+   THEME
+===================================================== */
 
 function toggleTheme() {
-    document.body.classList.toggle('light-mode');
-    localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+
+    document.body.classList.toggle(
+        'light-mode'
+    );
+
+
+    const isLight =
+        document.body.classList.contains(
+            'light-mode'
+        );
+
+
+    localStorage.setItem(
+        'genben-theme',
+        isLight
+            ? 'light'
+            : 'dark'
+    );
+
+
+    updateThemeButton();
+
 }
+
+
+
+/* =====================================================
+   LOAD THEME
+===================================================== */
 
 function loadTheme() {
-    if (localStorage.getItem('theme') === 'light') {
-        document.body.classList.add('light-mode');
-        const btn = document.getElementById('themeToggle');
-        if (btn) btn.textContent = '☀️';
+
+    const saved =
+        localStorage.getItem(
+            'genben-theme'
+        );
+
+
+    if (saved === 'light') {
+
+        document.body.classList.add(
+            'light-mode'
+        );
+
     }
+
+
+    updateThemeButton();
+
 }
+
+
+
+/* =====================================================
+   THEME BUTTON
+===================================================== */
+
+function updateThemeButton() {
+
+    const button =
+        document.getElementById(
+            'themeToggle'
+        );
+
+
+    if (!button) return;
+
+
+    if (
+        document.body.classList.contains(
+            'light-mode'
+        )
+    ) {
+
+        button.textContent = '☀️';
+
+    }
+    else {
+
+        button.textContent = '🌙';
+
+    }
+
+}
+
+
+
+/* =====================================================
+   MOBILE MENU
+===================================================== */
 
 function openNav() {
-    const nav = document.getElementById("mySidenav");
-    if (nav) nav.style.width = "250px";
+
+    document.getElementById(
+        'mySidenav'
+    ).style.width = '280px';
+
 }
+
+
 
 function closeNav() {
-    const nav = document.getElementById("mySidenav");
-    if (nav) nav.style.width = "0";
+
+    document.getElementById(
+        'mySidenav'
+    ).style.width = '0';
+
 }
+
+
+
+/* =====================================================
+   SHOW MORE SUMMARY
+===================================================== */
 
 function toggleSummary() {
-    const summaryText = document.getElementById('summaryText');
-    const toggleBtn = document.getElementById('toggleSummary');
-    if (!summaryText || !toggleBtn) return;
-    
-    summaryText.classList.toggle('expanded');
-    toggleBtn.textContent = summaryText.classList.contains('expanded') ? 'Show less ▴' : 'Show more ▾';
+
+    const summary =
+        document.getElementById(
+            'summaryText'
+        );
+
+
+    const button =
+        document.getElementById(
+            'toggleSummary'
+        );
+
+
+    summary.classList.toggle(
+        'expanded'
+    );
+
+
+    if (
+        summary.classList.contains(
+            'expanded'
+        )
+    ) {
+
+        button.textContent =
+            'Show less ▴';
+
+    }
+    else {
+
+        button.textContent =
+            'Show more ▾';
+
+    }
+
 }
 
-function setupSearchLogic() {
-    // Logic tìm kiếm nếu có
+
+
+/* =====================================================
+   FORMAT NUMBER
+===================================================== */
+
+function formatNumber(number) {
+
+    if (
+        number === null ||
+        number === undefined ||
+        number === ''
+    ) {
+
+        return '0';
+
+    }
+
+
+    const num =
+        Number(number);
+
+
+    if (isNaN(num)) {
+        return '0';
+    }
+
+
+    return num.toLocaleString(
+        'vi-VN'
+    );
+
 }
+
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(date) {
+
+    if (!date) {
+
+        return 'Đang cập nhật';
+
+    }
+
+
+    const d =
+        new Date(date);
+
+
+    if (isNaN(d.getTime())) {
+
+        return 'Đang cập nhật';
+
+    }
+
+
+    return d.toLocaleDateString(
+        'vi-VN',
+        {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric'
+        }
+    );
+
+}
+
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement(
+            'div'
+        );
+
+
+    div.textContent =
+        text == null
+            ? ''
+            : String(text);
+
+
+    return div.innerHTML;
+
+}
+
+
+
+/* =====================================================
+   SHOW ERROR
+===================================================== */
+
+function showError(message) {
+
+    const title =
+        document.getElementById(
+            'mangaTitle'
+        );
+
+
+    if (title) {
+
+        title.innerHTML = `
+
+            <span class="badge-hot">
+                !
+            </span>
+
+            ${escapeHTML(message)}
+
+        `;
+
+    }
+
+}
+
 </script>
 
 </body>
