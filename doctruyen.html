@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Đọc Truyện - Genben Manga</title>
 
 <!-- Logo trên tab trình duyệt -->
-<link rel="icon" type="image/jpeg" href="https://raw.githubusercontent.com/DichTruyenDrop/Wed/main/logoweb.jpg">
+<link rel="icon"
+      type="image/jpeg"
+      href="https://raw.githubusercontent.com/DichTruyenDrop/Wed/main/logoweb.jpg">
 
 <!-- Supabase JS Client -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -139,6 +142,14 @@ a {
 
   user-select: none;
   -webkit-user-select: none;
+
+  /* Giới hạn chiều rộng */
+  max-width: 260px;
+}
+
+.chap-select option {
+  background: #252336;
+  color: #ffffff;
 }
 
 .btn-nav {
@@ -168,13 +179,12 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0px;
+  gap: 0;
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
   min-height: 300px;
 
-  /* CHỐNG CHỌN */
   user-select: none;
   -webkit-user-select: none;
 }
@@ -271,7 +281,6 @@ a {
   .image-list-container {
     max-width: 100%;
   }
-
 }
 
 </style>
@@ -279,188 +288,188 @@ a {
 
 <body>
 
-  <!-- =========================================
-       HEADER
-  ========================================== -->
+<!-- =========================================
+     HEADER
+========================================== -->
 
-  <div class="header-top">
+<div class="header-top">
 
-    <div class="logo">
-      <a href="Maubia_2.html">
-        <img
-          src="Hinh/genben-logo.png"
-          alt="Logo"
-          draggable="false"
-        >
-      </a>
-    </div>
-
-    <div class="nav-top">
-      <a href="Maubia_2.html">TRANG CHỦ</a>
-    </div>
-
+  <div class="logo">
+    <a href="Maubia_2.html">
+      <img
+        src="Hinh/genben-logo.png"
+        alt="Logo"
+        draggable="false"
+      >
+    </a>
   </div>
 
+  <div class="nav-top">
+    <a href="Maubia_2.html">TRANG CHỦ</a>
+  </div>
 
-  <!-- =========================================
-       READER
-  ========================================== -->
-
-  <div class="reader-container" id="topPage">
-
-    <!-- BREADCRUMB -->
-
-    <div class="breadcrumb">
-
-      <a href="Maubia_2.html">
-        Home
-      </a>
-
-      /
-
-      <a
-        id="mangaLink"
-        href="Maubia_2.html"
-      >
-        Đang tải...
-      </a>
-
-      /
-
-      <span id="chapBreadcrumb">
-        Chapter --
-      </span>
-
-    </div>
+</div>
 
 
-    <!-- TÊN TRUYỆN + CHAPTER -->
+<!-- =========================================
+     READER
+========================================== -->
 
-    <h1
-      class="chapter-title"
-      id="mangaChapterTitle"
+<div class="reader-container" id="topPage">
+
+  <!-- BREADCRUMB -->
+
+  <div class="breadcrumb">
+
+    <a href="Maubia_2.html">
+      Home
+    </a>
+
+    /
+
+    <a
+      id="mangaLink"
+      href="Maubia_2.html"
     >
-      Đang tải chapter...
-    </h1>
+      Đang tải...
+    </a>
+
+    /
+
+    <span id="chapBreadcrumb">
+      Chapter --
+    </span>
+
+  </div>
 
 
-    <!-- =========================================
-         THANH CHUYỂN CHAPTER PHÍA TRÊN
-    ========================================== -->
+  <!-- TÊN TRUYỆN + CHAPTER -->
 
-    <div class="chap-nav-bar">
-
-      <button
-        class="btn-nav"
-        id="prevBtnTop"
-        onclick="navigateChapter('prev')"
-      >
-        ⬅
-      </button>
+  <h1
+    class="chapter-title"
+    id="mangaChapterTitle"
+  >
+    Đang tải chapter...
+  </h1>
 
 
-      <select
-        class="chap-select"
-        id="chapSelectTop"
-        onchange="onSelectChapter(this.value)"
-      ></select>
+  <!-- =========================================
+       THANH CHUYỂN CHAPTER PHÍA TRÊN
+  ========================================== -->
 
+  <div class="chap-nav-bar">
 
-      <button
-        class="btn-nav"
-        id="nextBtnTop"
-        onclick="navigateChapter('next')"
-      >
-        ➔
-      </button>
-
-      <button
-        class="btn-nav"
-        onclick="scrollToTop()"
-        title="Lên đầu trang"
-      >
-        ▲
-      </button>
-
-    </div>
-
-
-    <!-- =========================================
-         KHU VỰC ẢNH TRUYỆN
-    ========================================== -->
-
-    <div
-      class="image-list-container"
-      id="imageList"
+    <button
+      class="btn-nav"
+      id="prevBtnTop"
+      onclick="navigateChapter('prev')"
     >
-
-      <p
-        style="
-          padding:40px;
-          text-align:center;
-          color:var(--text-sub);
-        "
-      >
-        Đang tải hình ảnh chapter...
-      </p>
-
-    </div>
+      ⬅
+    </button>
 
 
-    <!-- =========================================
-         THANH CHUYỂN CHAPTER PHÍA DƯỚI
-    ========================================== -->
-
-    <div class="chap-nav-bar bottom-nav">
-
-      <button
-        class="btn-nav"
-        id="prevBtnBottom"
-        onclick="navigateChapter('prev')"
-      >
-        ⬅
-      </button>
+    <select
+      class="chap-select"
+      id="chapSelectTop"
+    ></select>
 
 
-      <select
-        class="chap-select"
-        id="chapSelectBottom"
-        onchange="onSelectChapter(this.value)"
-      ></select>
+    <button
+      class="btn-nav"
+      id="nextBtnTop"
+      onclick="navigateChapter('next')"
+    >
+      ➔
+    </button>
 
 
-      <button
-        class="btn-nav"
-        id="nextBtnBottom"
-        onclick="navigateChapter('next')"
-      >
-        ➔
-      </button>
-
-      <button
-        class="btn-nav"
-        onclick="scrollToTop()"
-        title="Lên đầu trang"
-      >
-        ▲
-      </button>
-
-    </div>
+    <button
+      class="btn-nav"
+      onclick="scrollToTop()"
+      title="Lên đầu trang"
+    >
+      ▲
+    </button>
 
   </div>
 
 
   <!-- =========================================
-       FOOTER
+       KHU VỰC ẢNH TRUYỆN
   ========================================== -->
 
-  <div class="footer">
+  <div
+    class="image-list-container"
+    id="imageList"
+  >
 
-    <div>
-      © 2026 Genben Manga. All rights reserved
-    </div>
+    <p
+      style="
+        padding:40px;
+        text-align:center;
+        color:var(--text-sub);
+      "
+    >
+      Đang tải hình ảnh chapter...
+    </p>
 
   </div>
+
+
+  <!-- =========================================
+       THANH CHUYỂN CHAPTER PHÍA DƯỚI
+  ========================================== -->
+
+  <div class="chap-nav-bar bottom-nav">
+
+    <button
+      class="btn-nav"
+      id="prevBtnBottom"
+      onclick="navigateChapter('prev')"
+    >
+      ⬅
+    </button>
+
+
+    <select
+      class="chap-select"
+      id="chapSelectBottom"
+    ></select>
+
+
+    <button
+      class="btn-nav"
+      id="nextBtnBottom"
+      onclick="navigateChapter('next')"
+    >
+      ➔
+    </button>
+
+
+    <button
+      class="btn-nav"
+      onclick="scrollToTop()"
+      title="Lên đầu trang"
+    >
+      ▲
+    </button>
+
+  </div>
+
+</div>
+
+
+<!-- =========================================
+     FOOTER
+========================================== -->
+
+<div class="footer">
+
+  <div>
+    © 2026 Genben Manga. All rights reserved
+  </div>
+
+</div>
 
 
 <script type="text/javascript">
@@ -490,6 +499,20 @@ let currentChapId = null;
 
 let currentTruyenId = null;
 
+/*
+ * chapterList luôn được sắp xếp theo SỐ CHAPTER.
+ *
+ * Ví dụ:
+ * Chapter 1
+ * Chapter 2
+ * Chapter 3
+ * ...
+ * Chapter 44
+ * ...
+ * Chapter 100
+ *
+ * Không còn phụ thuộc vào ID database.
+ */
 let chapterList = [];
 
 let currentIndex = -1;
@@ -516,10 +539,7 @@ window.addEventListener(
   'DOMContentLoaded',
   () => {
 
-    /* BẬT BẢO VỆ */
-
     enableImageProtection();
-
 
     if (currentChapId) {
 
@@ -532,12 +552,80 @@ window.addEventListener(
       document.getElementById(
         'mangaChapterTitle'
       ).innerText =
-        "Không tìm thấy Chapter!";
+        'Không tìm thấy Chapter!';
 
     }
 
   }
 );
+
+
+/* =========================================================
+   HÀM LẤY SỐ CHAPTER
+========================================================= */
+
+function getChapterNumber(chapter) {
+
+  if (!chapter) {
+    return -Infinity;
+  }
+
+  /*
+   * Ưu tiên ten_chap.
+   *
+   * Ví dụ:
+   * "Chapter 100" -> 100
+   * "Chương 44"   -> 44
+   * "Chap 2.5"    -> 2.5
+   */
+
+  const raw =
+    chapter.ten_chap ??
+    chapter.chapter ??
+    chapter.so_chap ??
+    chapter.chapter_number ??
+    chapter.number ??
+    chapter.chap ??
+    '';
+
+  if (typeof raw === 'number') {
+    return raw;
+  }
+
+  const text =
+    String(raw)
+      .replace(',', '.');
+
+  const match =
+    text.match(
+      /(\d+(?:\.\d+)?)/
+    );
+
+  if (match) {
+
+    const number =
+      Number(match[1]);
+
+    if (Number.isFinite(number)) {
+      return number;
+    }
+
+  }
+
+  /*
+   * Nếu không tìm được số chapter,
+   * dùng ID làm giá trị phụ.
+   */
+
+  const idNumber =
+    Number(chapter.id);
+
+  if (Number.isFinite(idNumber)) {
+    return idNumber;
+  }
+
+  return -Infinity;
+}
 
 
 /* =========================================================
@@ -631,7 +719,7 @@ async function loadChapterData(chapId) {
     document.getElementById(
       'mangaLink'
     ).href =
-      `chitiet.html?id=${currentTruyenId}`;
+      `chitiet.html?id=${encodeURIComponent(currentTruyenId)}`;
 
 
     document.getElementById(
@@ -651,6 +739,10 @@ async function loadChapterData(chapId) {
     ).innerText =
       `${mangaName} - ${chapData.ten_chap || 'Chapter'}`;
 
+
+    /* =========================================
+       LẤY ẢNH CHAPTER
+    ========================================= */
 
     const {
       data: pageData,
@@ -692,6 +784,10 @@ async function loadChapterData(chapId) {
     );
 
 
+    /* =========================================
+       LẤY DANH SÁCH CHAPTER
+    ========================================= */
+
     await loadAllChaptersOfManga(
       currentTruyenId,
       chapId
@@ -701,7 +797,7 @@ async function loadChapterData(chapId) {
   } catch (err) {
 
     console.error(
-      "Lỗi khi tải dữ liệu chapter:",
+      'Lỗi khi tải dữ liệu chapter:',
       err
     );
 
@@ -783,9 +879,7 @@ function renderImages(pageData) {
   pages.forEach(
     (page, idx) => {
 
-      if (
-        !page.link_anh
-      ) {
+      if (!page.link_anh) {
         return;
       }
 
@@ -814,10 +908,17 @@ function renderImages(pageData) {
         `Trang ${page.so_trang || idx + 1}`;
 
 
+      /*
+       * Trang đầu tải ngay.
+       * Các trang sau lazy load.
+       */
       if (idx === 0) {
 
         img.loading =
           'eager';
+
+        img.fetchPriority =
+          'high';
 
       } else {
 
@@ -829,6 +930,7 @@ function renderImages(pageData) {
 
       img.decoding =
         'async';
+
 
       img.draggable =
         false;
@@ -926,26 +1028,79 @@ async function loadAllChaptersOfManga(
         .eq(
           'truyen_id',
           truyenId
-        )
-
-        .order(
-          'id',
-          {
-            ascending: true
-          }
         );
 
 
     if (error) {
-
       throw error;
-
     }
 
 
-    chapterList =
-      data || [];
+    /*
+     * QUAN TRỌNG:
+     *
+     * Không dùng order('id').
+     *
+     * Vì ID database có thể:
+     *
+     * Chapter 100 = ID 100
+     * sau đó đăng Chapter 44 = ID 150
+     *
+     * Nếu order theo ID thì thứ tự sẽ sai.
+     *
+     * Bây giờ sắp xếp theo SỐ CHAPTER.
+     */
 
+    chapterList =
+      (data || []).sort(
+        (a, b) => {
+
+          const numA =
+            getChapterNumber(a);
+
+          const numB =
+            getChapterNumber(b);
+
+
+          /*
+           * Chapter lớn -> Chapter nhỏ
+           * hay nhỏ -> lớn?
+           *
+           * Ở đây dùng nhỏ -> lớn:
+           *
+           * 1
+           * 2
+           * 3
+           * ...
+           * 100
+           *
+           * để nút NEXT đi từ 1 -> 2 -> 3...
+           */
+
+          if (numA !== numB) {
+            return numA - numB;
+          }
+
+
+          /*
+           * Nếu hai chapter có cùng số,
+           * dùng ID để ổn định thứ tự.
+           */
+
+          return (
+            Number(a.id || 0) -
+            Number(b.id || 0)
+          );
+
+        }
+      );
+
+
+    /*
+     * TÌM CHAPTER HIỆN TẠI
+     *
+     * Không tìm theo vị trí ID nữa.
+     */
 
     currentIndex =
       chapterList.findIndex(
@@ -953,6 +1108,253 @@ async function loadAllChaptersOfManga(
           String(item.id) ===
           String(activeChapId)
       );
+
+
+    /* =========================================
+       LẤY SELECT
+    ========================================= */
+
+    const selectTop =
+      document.getElementById(
+        'chapSelectTop'
+      );
+
+
+    const selectBottom =
+      document.getElementById(
+        'chapSelectBottom'
+      );
+
+
+    /*
+     * Xóa danh sách cũ.
+     */
+
+    selectTop.innerHTML = '';
+    selectBottom.innerHTML = '';
+
+
+    /* =========================================
+       KHÔNG CÓ CHAPTER
+    ========================================= */
+
+    if (
+      chapterList.length === 0
+    ) {
+
+      const emptyOptionTop =
+        document.createElement(
+          'option'
+        );
+
+      emptyOptionTop.value = '';
+      emptyOptionTop.textContent =
+        'Chưa có chapter';
+
+
+      const emptyOptionBottom =
+        emptyOptionTop.cloneNode(
+          true
+        );
+
+
+      selectTop.appendChild(
+        emptyOptionTop
+      );
+
+      selectBottom.appendChild(
+        emptyOptionBottom
+      );
+
+
+      setNavigationButtons();
+
+      return;
+
+    }
+
+
+    /* =========================================
+       TẠO DANH SÁCH SELECT
+    ========================================= */
+
+    chapterList.forEach(
+      item => {
+
+        /*
+         * OPTION PHÍA TRÊN
+         */
+
+        const optTop =
+          document.createElement(
+            'option'
+          );
+
+
+        optTop.value =
+          String(item.id);
+
+
+        optTop.textContent =
+          item.ten_chap ||
+          `Chapter ${getChapterNumber(item)}`;
+
+
+        /*
+         * OPTION PHÍA DƯỚI
+         */
+
+        const optBottom =
+          document.createElement(
+            'option'
+          );
+
+
+        optBottom.value =
+          String(item.id);
+
+
+        optBottom.textContent =
+          item.ten_chap ||
+          `Chapter ${getChapterNumber(item)}`;
+
+
+        selectTop.appendChild(
+          optTop
+        );
+
+
+        selectBottom.appendChild(
+          optBottom
+        );
+
+      }
+    );
+
+
+    /*
+     * ========================================
+     * ĐÂY LÀ PHẦN SỬA LỖI ĐỒNG BỘ
+     * ========================================
+     *
+     * Không dùng selected trên từng option.
+     *
+     * Sau khi tạo xong danh sách,
+     * đặt VALUE cho cả 2 select cùng lúc.
+     */
+
+    const activeValue =
+      String(activeChapId);
+
+
+    selectTop.value =
+      activeValue;
+
+
+    selectBottom.value =
+      activeValue;
+
+
+    /*
+     * Kiểm tra nếu chapter hiện tại
+     * không tồn tại trong danh sách.
+     */
+
+    if (
+      selectTop.value !== activeValue
+    ) {
+
+      selectTop.selectedIndex = 0;
+
+    }
+
+
+    if (
+      selectBottom.value !== activeValue
+    ) {
+
+      selectBottom.selectedIndex = 0;
+
+    }
+
+
+    /*
+     * ========================================
+     * ĐỒNG BỘ SELECT TRÊN
+     * ========================================
+     */
+
+    selectTop.onchange =
+      function() {
+
+        const selectedId =
+          this.value;
+
+
+        /*
+         * Đồng bộ select dưới NGAY LẬP TỨC
+         */
+
+        selectBottom.value =
+          selectedId;
+
+
+        /*
+         * Chuyển chapter
+         */
+
+        onSelectChapter(
+          selectedId
+        );
+
+      };
+
+
+    /*
+     * ========================================
+     * ĐỒNG BỘ SELECT DƯỚI
+     * ========================================
+     */
+
+    selectBottom.onchange =
+      function() {
+
+        const selectedId =
+          this.value;
+
+
+        /*
+         * Đồng bộ select trên NGAY LẬP TỨC
+         */
+
+        selectTop.value =
+          selectedId;
+
+
+        /*
+         * Chuyển chapter
+         */
+
+        onSelectChapter(
+          selectedId
+        );
+
+      };
+
+
+    /*
+     * Cập nhật nút PREV / NEXT
+     */
+
+    setNavigationButtons();
+
+
+  } catch (err) {
+
+    console.error(
+      'Lỗi khi tải danh sách chapter:',
+      err
+    );
 
 
     const selectTop =
@@ -968,139 +1370,98 @@ async function loadAllChaptersOfManga(
 
 
     selectTop.innerHTML =
-      '';
+      '<option value="">Lỗi tải chapter</option>';
 
 
     selectBottom.innerHTML =
-      '';
-
-
-    if (
-      chapterList.length === 0
-    ) {
-
-      selectTop.innerHTML =
-        '<option>Chưa có chapter</option>';
-
-
-      selectBottom.innerHTML =
-        '<option>Chưa có chapter</option>';
-
-
-      document.getElementById(
-        'prevBtnTop'
-      ).disabled = true;
-
-
-      document.getElementById(
-        'prevBtnBottom'
-      ).disabled = true;
-
-
-      document.getElementById(
-        'nextBtnTop'
-      ).disabled = true;
-
-
-      document.getElementById(
-        'nextBtnBottom'
-      ).disabled = true;
-
-
-      return;
-
-    }
-
-
-    chapterList.forEach(
-      item => {
-
-        const opt1 =
-          document.createElement(
-            'option'
-          );
-
-
-        opt1.value =
-          item.id;
-
-
-        opt1.innerText =
-          item.ten_chap ||
-          `Chapter ${item.id}`;
-
-
-        if (
-          String(item.id) ===
-          String(activeChapId)
-        ) {
-
-          opt1.selected =
-            true;
-
-        }
-
-
-        const opt2 =
-          opt1.cloneNode(
-            true
-          );
-
-
-        selectTop.appendChild(
-          opt1
-        );
-
-
-        selectBottom.appendChild(
-          opt2
-        );
-
-      }
-    );
-
-
-    const isFirst =
-      currentIndex <= 0;
-
-
-    document.getElementById(
-      'prevBtnTop'
-    ).disabled =
-      isFirst;
-
-
-    document.getElementById(
-      'prevBtnBottom'
-    ).disabled =
-      isFirst;
-
-
-    const isLast =
-      currentIndex ===
-      chapterList.length - 1;
-
-
-    document.getElementById(
-      'nextBtnTop'
-    ).disabled =
-      isLast;
-
-
-    document.getElementById(
-      'nextBtnBottom'
-    ).disabled =
-      isLast;
-
-
-  } catch (err) {
-
-    console.error(
-      "Lỗi khi tải danh sách chapter:",
-      err
-    );
+      '<option value="">Lỗi tải chapter</option>';
 
   }
+
+}
+
+
+/* =========================================================
+   CẬP NHẬT NÚT PREV / NEXT
+========================================================= */
+
+function setNavigationButtons() {
+
+  const prevTop =
+    document.getElementById(
+      'prevBtnTop'
+    );
+
+
+  const prevBottom =
+    document.getElementById(
+      'prevBtnBottom'
+    );
+
+
+  const nextTop =
+    document.getElementById(
+      'nextBtnTop'
+    );
+
+
+  const nextBottom =
+    document.getElementById(
+      'nextBtnBottom'
+    );
+
+
+  /*
+   * Không có chapter hiện tại
+   */
+
+  if (
+    currentIndex < 0 ||
+    chapterList.length === 0
+  ) {
+
+    prevTop.disabled = true;
+    prevBottom.disabled = true;
+
+    nextTop.disabled = true;
+    nextBottom.disabled = true;
+
+    return;
+
+  }
+
+
+  /*
+   * Chapter đầu tiên
+   */
+
+  const isFirst =
+    currentIndex <= 0;
+
+
+  prevTop.disabled =
+    isFirst;
+
+
+  prevBottom.disabled =
+    isFirst;
+
+
+  /*
+   * Chapter cuối cùng
+   */
+
+  const isLast =
+    currentIndex >=
+    chapterList.length - 1;
+
+
+  nextTop.disabled =
+    isLast;
+
+
+  nextBottom.disabled =
+    isLast;
 
 }
 
@@ -1118,6 +1479,34 @@ function onSelectChapter(
   }
 
 
+  /*
+   * Đồng bộ cả 2 select trước khi chuyển trang.
+   */
+
+  const selectTop =
+    document.getElementById(
+      'chapSelectTop'
+    );
+
+
+  const selectBottom =
+    document.getElementById(
+      'chapSelectBottom'
+    );
+
+
+  selectTop.value =
+    String(chapId);
+
+
+  selectBottom.value =
+    String(chapId);
+
+
+  /*
+   * Chuyển sang chapter mới.
+   */
+
   window.location.href =
     `doctruyen.html?chap_id=${encodeURIComponent(chapId)}`;
 
@@ -1133,41 +1522,115 @@ function navigateChapter(
 ) {
 
   if (
-    direction === 'prev' &&
-    currentIndex > 0
+    !chapterList ||
+    chapterList.length === 0 ||
+    currentIndex < 0
   ) {
-
-    const targetId =
-      chapterList[
-        currentIndex - 1
-      ].id;
-
-
-    window.location.href =
-      `doctruyen.html?chap_id=${encodeURIComponent(targetId)}`;
-
 
     return;
 
   }
 
 
+  let targetIndex =
+    currentIndex;
+
+
+  /* =========================================
+     PREVIOUS
+  ========================================= */
+
   if (
-    direction === 'next' &&
-    currentIndex <
-    chapterList.length - 1
+    direction === 'prev'
   ) {
 
-    const targetId =
-      chapterList[
-        currentIndex + 1
-      ].id;
+    if (
+      currentIndex <= 0
+    ) {
+
+      return;
+
+    }
 
 
-    window.location.href =
-      `doctruyen.html?chap_id=${encodeURIComponent(targetId)}`;
+    targetIndex =
+      currentIndex - 1;
 
   }
+
+
+  /* =========================================
+     NEXT
+  ========================================= */
+
+  if (
+    direction === 'next'
+  ) {
+
+    if (
+      currentIndex >=
+      chapterList.length - 1
+    ) {
+
+      return;
+
+    }
+
+
+    targetIndex =
+      currentIndex + 1;
+
+  }
+
+
+  const targetChapter =
+    chapterList[targetIndex];
+
+
+  if (
+    !targetChapter ||
+    !targetChapter.id
+  ) {
+
+    return;
+
+  }
+
+
+  /*
+   * Đồng bộ select trước khi chuyển.
+   */
+
+  const targetId =
+    String(targetChapter.id);
+
+
+  const selectTop =
+    document.getElementById(
+      'chapSelectTop'
+    );
+
+
+  const selectBottom =
+    document.getElementById(
+      'chapSelectBottom'
+    );
+
+
+  selectTop.value =
+    targetId;
+
+
+  selectBottom.value =
+    targetId;
+
+
+  /*
+   * Chuyển chapter.
+   */
+
+  window.location.href =
+    `doctruyen.html?chap_id=${encodeURIComponent(targetChapter.id)}`;
 
 }
 
@@ -1177,10 +1640,12 @@ function navigateChapter(
 ========================================================= */
 
 function scrollToTop() {
+
   window.scrollTo({
     top: 0,
     behavior: 'smooth'
   });
+
 }
 
 
@@ -1202,6 +1667,7 @@ function enableImageProtection() {
     true
   );
 
+
   document.addEventListener(
     'dragstart',
     function(e) {
@@ -1213,6 +1679,7 @@ function enableImageProtection() {
     },
     true
   );
+
 
   document.addEventListener(
     'selectstart',
@@ -1226,6 +1693,7 @@ function enableImageProtection() {
     true
   );
 
+
   document.addEventListener(
     'copy',
     function(e) {
@@ -1237,6 +1705,7 @@ function enableImageProtection() {
     },
     true
   );
+
 
   document.addEventListener(
     'cut',
@@ -1250,6 +1719,7 @@ function enableImageProtection() {
     true
   );
 
+
   document.addEventListener(
     'keydown',
     function(e) {
@@ -1257,54 +1727,120 @@ function enableImageProtection() {
       const key =
         String(e.key).toLowerCase();
 
+
       if (e.key === 'F12') {
+
         e.preventDefault();
+
         return false;
+
       }
 
-      if (e.ctrlKey && key === 's') {
+
+      if (
+        e.ctrlKey &&
+        key === 's'
+      ) {
+
         e.preventDefault();
+
         return false;
+
       }
 
-      if (e.ctrlKey && key === 'u') {
+
+      if (
+        e.ctrlKey &&
+        key === 'u'
+      ) {
+
         e.preventDefault();
+
         return false;
+
       }
 
-      if (e.ctrlKey && key === 'p') {
+
+      if (
+        e.ctrlKey &&
+        key === 'p'
+      ) {
+
         e.preventDefault();
+
         return false;
+
       }
 
-      if (e.ctrlKey && key === 'c') {
+
+      if (
+        e.ctrlKey &&
+        key === 'c'
+      ) {
+
         e.preventDefault();
+
         return false;
+
       }
 
-      if (e.ctrlKey && e.shiftKey && key === 'i') {
+
+      if (
+        e.ctrlKey &&
+
+        e.shiftKey &&
+        key === 'i'
+      ) {
+
         e.preventDefault();
+
         return false;
+
       }
 
-      if (e.ctrlKey && e.shiftKey && key === 'j') {
+
+      if (
+        e.ctrlKey &&
+        e.shiftKey &&
+        key === 'j'
+      ) {
+
         e.preventDefault();
+
         return false;
+
       }
 
-      if (e.ctrlKey && e.shiftKey && key === 'c') {
+
+      if (
+        e.ctrlKey &&
+        e.shiftKey &&
+        key === 'c'
+      ) {
+
         e.preventDefault();
+
         return false;
+
       }
 
-      if (e.ctrlKey && e.shiftKey && key === 's') {
+
+      if (
+        e.ctrlKey &&
+        e.shiftKey &&
+        key === 's'
+      ) {
+
         e.preventDefault();
+
         return false;
+
       }
 
     },
     true
   );
+
 
   document.addEventListener(
     'touchstart',
@@ -1326,6 +1862,7 @@ function enableImageProtection() {
     }
   );
 
+
   document.addEventListener(
     'gesturestart',
     function(e) {
@@ -1338,6 +1875,7 @@ function enableImageProtection() {
     }
   );
 
+
   document.addEventListener(
     'drop',
     function(e) {
@@ -1349,6 +1887,7 @@ function enableImageProtection() {
     },
     true
   );
+
 
   document.addEventListener(
     'dblclick',
@@ -1377,7 +1916,9 @@ function enableImageProtection() {
 (function devToolsProtection() {
 
   let devtoolsOpen = false;
+
   const threshold = 160;
+
 
   setInterval(
     function() {
@@ -1386,9 +1927,11 @@ function enableImageProtection() {
         window.outerWidth -
         window.innerWidth;
 
+
       const heightDiff =
         window.outerHeight -
         window.innerHeight;
+
 
       if (
         widthDiff > threshold ||
@@ -1399,6 +1942,7 @@ function enableImageProtection() {
 
           devtoolsOpen =
             true;
+
 
           document.documentElement
             .setAttribute(
@@ -1412,6 +1956,7 @@ function enableImageProtection() {
 
         devtoolsOpen =
           false;
+
 
         document.documentElement
           .removeAttribute(
@@ -1444,6 +1989,7 @@ window.addEventListener(
             'draggable',
             'false'
           );
+
 
           img.addEventListener(
             'dragstart',
